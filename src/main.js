@@ -6,8 +6,8 @@ class MenuScene extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image("banner","assets/banner.png");
-        this.load.image("background","assets/background.png")
+        this.load.image("banner","assets/Logo/logo.png");
+        this.load.image("background","assets/Sprites/Others/Background.png")
     }
     create(){
         this.background = this.add.tileSprite(0,0,500,600,"background").setOrigin(0,0);
