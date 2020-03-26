@@ -1,13 +1,13 @@
-
 (function () {
-    window.onload = main
+    window.onload = main;
 })();
 
 function main() {
-    var game = new Phaser.Game({
+    var config = {
         type: Phaser.CANVAS,
-        width: 500,
-        height: 600,
-        scene: [IntroScene,MenuScene ]
-    });
+        width: CONSTANTS.CANVAS.WIDTH,
+        height: CONSTANTS.CANVAS.HEIGHT,
+        scene: [IntroScene, MenuScene]
+    };
+    var game = new Phaser.Game(config);
 }

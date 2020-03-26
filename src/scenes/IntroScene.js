@@ -1,45 +1,68 @@
 class IntroScene extends Phaser.Scene {
-    constructor(){
-        super("IntroScene");
-        this.background = null;
-        this.banner = null
-        this.text = null;
-    }
-    preload(){
-        console.log("preload intro")
-        // Load from Assets
-        this.load.image("background","assets/Sprites/Others/background.png");
-        this.load.image("logo","assets/Logo/Logo.png");
-        this.load.bitmapFont("joystix","assets/Fonts/joystix/joystix_white.png","assets/Fonts/joystix/joystix_white.fnt");
+    logo;
+    background;
+    text;
+    timer;
+    blink;
+
+    constructor() {
+        super(CONSTANTS.SCENE.INTRO.NAME);
+        this.timer = 0;
+        this.blink = true;
     }
 
-    create(){
-        console.log("introscene");
-        // Add to this scene
-        this.background = this.add.tileSprite(0,0,1080,1920,"background").setOrigin(0,0);
-        this.banner = this.add.sprite(0,0,"logo");
-        this.text = this.add.bitmapText(0,0,"joystix","PRESS HERE TO CONTINUE",20).setOrigin();
-        // Resize and placements
-        var resizeLogoFactor = 0.5;
-        this.banner.scaleX = resizeLogoFactor;
-        this.banner.scaleY = resizeLogoFactor;
-        this.banner.setPosition(250,200);
-        this.text.setPosition(250,400);
-        // Listeners
-        this.text.setInteractive();
-        this.text.on("pointerdown", () => {
-            if (this.scene.isSleeping("MenuScene")){
-                this.scene.wake("MenuScene");
-                console.log("resume menu")
-            } else {
-                this.scene.launch("MenuScene");
-                console.log("launch");
-            }
-            this.scene.sleep();
-        });
+    preload() {
+        console.log("preload introscene");
+        // Load from Assets
+        this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
+        this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
+        this.load.bitmapFont(CONSTANTS.SCENE.INTRO.TEXT.NAME, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
     }
-    update(){
-        this.background.tilePositionY += 0.2;
+
+    create() {
+        console.log("create introscene");
+        // Add to this scene
+        this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
+        this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
+        this.text = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.TEXT.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INTRO.TEXT.MESSAGE, CONSTANTS.SCENE.INTRO.TEXT.FONTSIZE).setOrigin().setInteractive();
+        // Listeners
+        this.input.keyboard.on(CONSTANTS.SCENE.INTRO.CONTINUE, this.spaceHandler, this);
+    }
+
+    update() {  // The update function updates the scene every 60hz ==> every 16ms
+        this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
+        if (this.blink) {
+            this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
+            if (this.timer > CONSTANTS.SCENE.SPEED.TEXT) {
+                this.timer = 0;
+                this.text.visible = !this.text.visible;
+            }
+        }
+    }
+
+    spaceHandler(ev) {
+        this.input.keyboard.off(CONSTANTS.SCENE.INTRO.CONTINUE);
+        this.blink = false;
+        this.text.visible = true;
+        var config = {
+            target: CONSTANTS.SCENE.MENU.NAME,
+            duration: CONSTANTS.SCENE.SPEED.TRANSITION,
+            moveBelow: true,
+            onUpdate: this.transitionOut,
+
+        };
+        this.scene.transition(config);
+    }
+
+    transitionOut(progress) {
+        //console.log("progress " + progress);
+        this.text.y = CONSTANTS.SCENE.INTRO.TEXT.Y + (CONSTANTS.CANVAS.HEIGHT - CONSTANTS.SCENE.INTRO.TEXT.Y) * progress;
+        this.text.alpha = 1 - progress;
+        this.logo.y = CONSTANTS.SCENE.INTRO.LOGO.Y - (CONSTANTS.SCENE.INTRO.LOGO.Y - CONSTANTS.SCENE.MENU.LOGO.Y) * progress;
+        if (progress >= 0.5){
+            this.background.alpha = 1 - 4 * (progress - 0.5)**2; //perguntem-me sobre esta formula
+        }
+
     }
 
 }
