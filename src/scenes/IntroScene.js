@@ -24,7 +24,7 @@ class IntroScene extends Phaser.Scene {
         // Add to this scene
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
-        this.text = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.TEXT.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INTRO.TEXT.MESSAGE, CONSTANTS.SCENE.INTRO.TEXT.FONTSIZE).setOrigin().setInteractive();
+        this.text = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.TEXT.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INTRO.TEXT.MESSAGE, CONSTANTS.SCENE.INTRO.TEXT.FONTSIZE).setOrigin();
         // Listeners
         this.input.keyboard.on(CONSTANTS.SCENE.INTRO.CONTINUE, this.spaceHandler, this);
     }
@@ -49,7 +49,6 @@ class IntroScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.TRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
-
         };
         this.scene.transition(config);
     }
@@ -62,7 +61,5 @@ class IntroScene extends Phaser.Scene {
         if (progress >= 0.5){
             this.background.alpha = 1 - 4 * (progress - 0.5)**2; //perguntem-me sobre esta formula
         }
-
     }
-
 }
