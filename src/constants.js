@@ -18,6 +18,7 @@ const CONSTANTS = {
             NAME: "logo",
             SCALE: 0.5
         },
+
         // Relative to the IntroScene
         INTRO: {
             NAME: "IntroScene",
@@ -27,10 +28,23 @@ const CONSTANTS = {
                 Y: 400,
                 MESSAGE: "Press space to continue",
                 FONTSIZE: 20,
+                SOUND: "textSound"
             },
             LOGO: {
                 Y: 200
-            }
+            },
+            BACKGROUND_MUSIC:{
+                NAME: "backGroundMusic",
+                CONFIG : {
+                    mute : false,
+                    volume : 0.5,
+                    detune: 0,
+                    seek: 0,
+                    loop: true,
+                    delay: 0
+                },
+            },
+
         },
         // Relative to the MenuScene
         MENU: {
@@ -51,6 +65,17 @@ const CONSTANTS = {
                 },
                 SETTINGS: {
                     NAME: "settingsButton",
+                },
+            },
+            BACKGROUND_MUSIC:{
+                NAME: "backGroundMusic2",
+                CONFIG : {
+                    mute : false,
+                    volume : 0.5,
+                    detune: 0,
+                    seek: 0,
+                    loop: true,
+                    delay: 0
                 },
             },
         },

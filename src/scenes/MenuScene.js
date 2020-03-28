@@ -13,12 +13,14 @@ class MenuScene extends Phaser.Scene {
     preload() {
         console.log("preload menuscene");
         //Preload Assets
+
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME, "assets/Sprites/UI/MenuPlay.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME, "assets/Sprites/UI/MenuHelp.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME, "assets/Sprites/UI/MenuStore.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME, "assets/Sprites/UI/MenuSettings.png");
+        this.load.audio(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME, "assets/Sounds/Double_the_Bits.mp3");
 
     }
 
@@ -33,6 +35,8 @@ class MenuScene extends Phaser.Scene {
         this.settingsButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 4, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME).setInteractive();
         // Listeners
         this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
+        this.music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
+        this.music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG)
     }
 
     update() {
