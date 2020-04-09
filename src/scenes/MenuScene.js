@@ -25,7 +25,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME, "assets/Sprites/UI/MenuSettingsBlue.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME, "assets/Sprites/UI/MenuSettingsPink.png");
         this.load.audio(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME, "assets/Sounds/Double_the_Bits.mp3");
-        this.load.audio(CONSTANTS.SCENE.MENU.SOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
+        this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
     }
 
     create() {
@@ -44,25 +44,47 @@ class MenuScene extends Phaser.Scene {
         this.music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
         this.playButton.on('pointerover', this.changeplayon,this);
         this.playButton.on('pointerout', this.changeplayoff,this);
+        this.playButton.on('pointerdown', this.changeplay,this);
         this.helpButton.on('pointerover', this.changehelpon,this);
         this.helpButton.on('pointerout', this.changehelpoff,this);
         this.storeButton.on('pointerover', this.changestoreon, this);
         this.storeButton.on('pointerout', this.changestoreoff,this);
         this.settingsButton.on('pointerover', this.changesettingson,this);
         this.settingsButton.on('pointerout', this.changesettingsoff,this);
-        this.btnSound = this.sound.add(CONSTANTS.SCENE.MENU.SOUND.NAME);
+        this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
+
 
     }
 
-    changeplayon(pointer){ this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME); this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changeplayon(pointer){ this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME); this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
     changeplayoff(pointer){this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);}
-    changehelpon(pointer){ this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changehelpon(pointer){ this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
     changehelpoff(pointer){this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);}
-    changestoreon(pointer){ this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changestoreon(pointer){ this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
     changestoreoff(pointer){this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);}
-    changesettingson(pointer){ this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changesettingson(pointer){ this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
     changesettingsoff(pointer){this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);}
 
+    changeplay(ev) {
+        //this.input.mouse.capture(off)
+        console.log(CONSTANTS.SCENE.MENUPLAY.NAME);
+        var config = {
+            target: CONSTANTS.SCENE.MENUPLAY.NAME,
+            duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
+            moveBelow: true,
+            onUpdate: this.transitionOut,
+        };
+        console.log("Here");
+        this.scene.transition(config);
+    }
+
+    transitionOut(progress){
+        console.log("gasdfagskfhj");
+        this.music.stop();
+        if (progress >= 0.5){
+            this.background.alpha = 1 - 4 * (progress - 0.5)**2; //perguntem-me sobre esta formula
+        }
+    }
     update() {
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
     }

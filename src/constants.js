@@ -9,7 +9,8 @@ const CONSTANTS = {
         SPEED: {
             TILE: 0.2,
             TEXT: 1000,
-            TRANSITION: 2000
+            TRANSITION: 2000,
+            MENUTRANSITION: 0,
         },
         BACKGROUND: {
             NAME: "background"
@@ -17,6 +18,17 @@ const CONSTANTS = {
         LOGO: {
             NAME: "logo",
             SCALE: 0.5
+        },
+        BTNSOUND: {
+            NAME: "buttonSound",
+            CONFIG: {
+                mute: false,
+                volume: 0.1,
+                detune: 0,
+                seek: 0,
+                loop: false,
+                delay: 0
+            },
         },
 
         // Relative to the IntroScene
@@ -79,17 +91,6 @@ const CONSTANTS = {
                     NAME: "settingsButtonSelected",
                 },
             },
-            SOUND:{
-                NAME: "buttonSound",
-                CONFIG : {
-                    mute : false,
-                    volume : 0.1,
-                    detune: 0,
-                    seek: 0,
-                    loop: false,
-                    delay: 0
-                },
-            },
             BACKGROUND_MUSIC:{
                 NAME: "backGroundMusic2",
                 CONFIG : {
@@ -102,5 +103,27 @@ const CONSTANTS = {
                 },
             },
         },
+        MENUPLAY:{
+            NAME: "PlayScene",
+            SPACING : 90,
+            LOGO: {
+                Y: 100,
+            },
+            BUTTON: {
+                SPACING: 90,
+                HISTORY: {
+                    NAME: "HistoryButton",
+                },
+                HISTORYSELECTED: {
+                    NAME: "HistoryButtonSelected",
+                },
+                ARCADE: {
+                    NAME: "ArcadeButton",
+                },
+                ARCADESELECTED: {
+                    NAME: "ArcadeButtonSelected",
+                },
+            },
+        }
     },
 };

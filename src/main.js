@@ -7,7 +7,7 @@ function main() {
         type: Phaser.CANVAS,
         width: CONSTANTS.CANVAS.WIDTH,
         height: CONSTANTS.CANVAS.HEIGHT,
-        scene: [IntroScene, MenuScene]
+        scene: [IntroScene, MenuScene, PlayScene]
     };
     var game = new Phaser.Game(config);
 }
