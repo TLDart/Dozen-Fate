@@ -37,7 +37,7 @@ const CONSTANTS = {
                 NAME: "backGroundMusic",
                 CONFIG : {
                     mute : false,
-                    volume : 0.5,
+                    volume : 0.3,
                     detune: 0,
                     seek: 0,
                     loop: true,
@@ -77,6 +77,17 @@ const CONSTANTS = {
                 },
                 SETTINGSSELECTED: {
                     NAME: "settingsButtonSelected",
+                },
+            },
+            SOUND:{
+                NAME: "buttonSound",
+                CONFIG : {
+                    mute : false,
+                    volume : 0.1,
+                    detune: 0,
+                    seek: 0,
+                    loop: false,
+                    delay: 0
                 },
             },
             BACKGROUND_MUSIC:{

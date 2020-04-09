@@ -25,7 +25,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME, "assets/Sprites/UI/MenuSettingsBlue.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME, "assets/Sprites/UI/MenuSettingsPink.png");
         this.load.audio(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME, "assets/Sounds/Double_the_Bits.mp3");
-
+        this.load.audio(CONSTANTS.SCENE.MENU.SOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
     }
 
     create() {
@@ -42,24 +42,26 @@ class MenuScene extends Phaser.Scene {
         this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
         this.music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
         this.music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
-        this.playButton.on('pointerover', this.changeplayon,this.playButton);
-        this.playButton.on('pointerout', this.changeplayoff,this.playButton);
-        this.helpButton.on('pointerover', this.changehelpon,this.helpButton);
-        this.helpButton.on('pointerout', this.changehelpoff,this.helpButton);
-        this.storeButton.on('pointerover', this.changestoreon, this.storeButton);
-        this.storeButton.on('pointerout', this.changestoreoff,this.storeButton);
-        this.settingsButton.on('pointerover', this.changesettingson,this.settingsButton);
-        this.settingsButton.on('pointerout', this.changesettingsoff,this.settingsButton);
-        }
+        this.playButton.on('pointerover', this.changeplayon,this);
+        this.playButton.on('pointerout', this.changeplayoff,this);
+        this.helpButton.on('pointerover', this.changehelpon,this);
+        this.helpButton.on('pointerout', this.changehelpoff,this);
+        this.storeButton.on('pointerover', this.changestoreon, this);
+        this.storeButton.on('pointerout', this.changestoreoff,this);
+        this.settingsButton.on('pointerover', this.changesettingson,this);
+        this.settingsButton.on('pointerout', this.changesettingsoff,this);
+        this.btnSound = this.sound.add(CONSTANTS.SCENE.MENU.SOUND.NAME);
 
-    changeplayon(pointer){ this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME);}
-    changeplayoff(pointer){this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);}
-    changehelpon(pointer){ this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);}
-    changehelpoff(pointer){this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);}
-    changestoreon(pointer){ this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);}
-    changestoreoff(pointer){this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);}
-    changesettingson(pointer){ this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);}
-    changesettingsoff(pointer){this.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);}
+    }
+
+    changeplayon(pointer){ this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME); this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changeplayoff(pointer){this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);}
+    changehelpon(pointer){ this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changehelpoff(pointer){this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);}
+    changestoreon(pointer){ this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changestoreoff(pointer){this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);}
+    changesettingson(pointer){ this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.MENU.SOUND.CONFIG)}
+    changesettingsoff(pointer){this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);}
 
     update() {
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
