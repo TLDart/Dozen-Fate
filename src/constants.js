@@ -57,14 +57,26 @@ const CONSTANTS = {
                 PLAY: {
                     NAME: "playButton",
                 },
+                PLAYSELECTED: {
+                    NAME: "playButtonSelected",
+                },
                 HELP: {
                     NAME: "helpButton",
+                },
+                HELPSELECTED: {
+                    NAME: "helpButtonSelected",
                 },
                 STORE: {
                     NAME: "storeButton",
                 },
+                STORESELECTED: {
+                    NAME: "storeButtonSelected",
+                },
                 SETTINGS: {
                     NAME: "settingsButton",
+                },
+                SETTINGSSELECTED: {
+                    NAME: "settingsButtonSelected",
                 },
             },
             BACKGROUND_MUSIC:{
