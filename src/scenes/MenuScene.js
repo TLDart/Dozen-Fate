@@ -1,3 +1,4 @@
+var music = null;
 class MenuScene extends Phaser.Scene {
     logo;
     background;
@@ -5,6 +6,7 @@ class MenuScene extends Phaser.Scene {
     helpButton;
     storeButton;
     settingsButton;
+    music;
 
     constructor() {
         super(CONSTANTS.SCENE.MENU.NAME);
@@ -40,8 +42,10 @@ class MenuScene extends Phaser.Scene {
         this.settingsButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 4, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME).setInteractive();
         // Listeners
         this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
-        this.music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
-        this.music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
+        music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
+        //music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
+
+
         this.playButton.on('pointerover', this.changeplayon,this);
         this.playButton.on('pointerout', this.changeplayoff,this);
         this.playButton.on('pointerdown', this.changeplay,this);
@@ -74,13 +78,12 @@ class MenuScene extends Phaser.Scene {
             moveBelow: true,
             onUpdate: this.transitionOut,
         };
-        console.log("Here");
         this.scene.transition(config);
     }
 
     transitionOut(progress){
         console.log("gasdfagskfhj");
-        this.music.stop();
+        //this.music.stop();
         if (progress >= 0.5){
             this.background.alpha = 1 - 4 * (progress - 0.5)**2; //perguntem-me sobre esta formula
         }

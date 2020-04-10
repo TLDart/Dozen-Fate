@@ -123,6 +123,12 @@ const CONSTANTS = {
                 ARCADESELECTED: {
                     NAME: "ArcadeButtonSelected",
                 },
+                BACK:{
+                    NAME: "backbtn",
+                    NAMESELECTED: "backbtnSelected",
+                    PADDING: 10,
+                    BTNSIZE: 64
+                },
             },
         }
     },
