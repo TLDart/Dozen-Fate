@@ -113,16 +113,28 @@ const CONSTANTS = {
                 SPACING: 90,
                 HISTORY: {
                     NAME: "HistoryButton",
-                },
-                HISTORYSELECTED: {
-                    NAME: "HistoryButtonSelected",
+                    NAMESELECTED: "HistoryButtonSelected",
                 },
                 ARCADE: {
                     NAME: "ArcadeButton",
+                    NAMESELECTED: "ArcadeButtonSelected",
                 },
-                ARCADESELECTED: {
-                    NAME: "ArcadeButtonSelected",
+                BACK:{
+                    NAME: "backbtn",
+                    NAMESELECTED: "backbtnSelected",
+                    PADDING: 10,
+                    BTNSIZE: 64
                 },
+            },
+        },
+        HELP:{
+            NAME: "HelpScene",
+            SPACING : 90,
+            LOGO: {
+                Y: 100,
+            },
+            BUTTON: {
+                SPACING: 90,
                 BACK:{
                     NAME: "backbtn",
                     NAMESELECTED: "backbtnSelected",

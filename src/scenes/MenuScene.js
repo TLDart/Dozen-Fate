@@ -44,13 +44,19 @@ class MenuScene extends Phaser.Scene {
         this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
         music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
         //music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
-
+        this.changeplay = function () {
+            this.changelevel(CONSTANTS.SCENE.MENUPLAY.NAME)
+        }
+        this.changehelp = function() {
+            this.changelevel(CONSTANTS.SCENE.HELP.NAME)
+        }
 
         this.playButton.on('pointerover', this.changeplayon,this);
         this.playButton.on('pointerout', this.changeplayoff,this);
         this.playButton.on('pointerdown', this.changeplay,this);
         this.helpButton.on('pointerover', this.changehelpon,this);
         this.helpButton.on('pointerout', this.changehelpoff,this);
+        this.helpButton.on('pointerdown', this.changehelp,this);
         this.storeButton.on('pointerover', this.changestoreon, this);
         this.storeButton.on('pointerout', this.changestoreoff,this);
         this.settingsButton.on('pointerover', this.changesettingson,this);
@@ -69,11 +75,9 @@ class MenuScene extends Phaser.Scene {
     changesettingson(pointer){ this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
     changesettingsoff(pointer){this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);}
 
-    changeplay(ev) {
-        //this.input.mouse.capture(off)
-        console.log(CONSTANTS.SCENE.MENUPLAY.NAME);
+    changelevel(levelName) {
         var config = {
-            target: CONSTANTS.SCENE.MENUPLAY.NAME,
+            target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
