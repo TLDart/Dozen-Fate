@@ -51,29 +51,51 @@ class MenuScene extends Phaser.Scene {
             this.changelevel(CONSTANTS.SCENE.HELP.NAME)
         }
 
-        this.playButton.on('pointerover', this.changeplayon,this);
-        this.playButton.on('pointerout', this.changeplayoff,this);
+        this.playButton.on('pointerover', activePlay,this);
+        this.playButton.on('pointerout', inactivePlay,this);
         this.playButton.on('pointerdown', this.changeplay,this);
-        this.helpButton.on('pointerover', this.changehelpon,this);
-        this.helpButton.on('pointerout', this.changehelpoff,this);
+        this.helpButton.on('pointerover', activeHelp,this);
+        this.helpButton.on('pointerout', inactiveHelp,this);
         this.helpButton.on('pointerdown', this.changehelp,this);
-        this.storeButton.on('pointerover', this.changestoreon, this);
-        this.storeButton.on('pointerout', this.changestoreoff,this);
-        this.settingsButton.on('pointerover', this.changesettingson,this);
-        this.settingsButton.on('pointerout', this.changesettingsoff,this);
+        this.storeButton.on('pointerover', activeStore, this);
+        this.storeButton.on('pointerout', inactiveStore,this);
+        this.settingsButton.on('pointerover', activeSettings,this);
+        this.settingsButton.on('pointerout', inactiveSettings,this);
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
 
 
+        function activePlay(){
+            this.activate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME);
+        }
+        function inactivePlay(){
+            this.deactivate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);
+        }
+        function activeHelp(){
+            this.activate(this.helpButton, CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);
+        }
+        function inactiveHelp(){
+            this.deactivate(this.helpButton, CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);
+        }
+        function activeStore(){
+            this.activate(this.storeButton, CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);
+        }
+        function inactiveStore(){
+            this.deactivate(this.storeButton, CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);
+        }
+        function activeSettings(){
+            this.activate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);
+        }
+        function inactiveSettings(){
+            this.deactivate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);
+        }
     }
-
-    changeplayon(pointer){ this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME); this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
-    changeplayoff(pointer){this.playButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);}
-    changehelpon(pointer){ this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
-    changehelpoff(pointer){this.helpButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);}
-    changestoreon(pointer){ this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
-    changestoreoff(pointer){this.storeButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);}
-    changesettingson(pointer){ this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
-    changesettingsoff(pointer){this.settingsButton.setTexture(CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);}
+    activate(button, texture){
+        button.setTexture(texture);
+        this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
+    }
+    deactivate(button, texture){
+        button.setTexture(texture);
+    }
 
     changelevel(levelName) {
         var config = {
