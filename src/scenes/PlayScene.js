@@ -28,16 +28,21 @@ class PlayScene extends Phaser.Scene{
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
 
         this.changemenu = function () {
-            this.changelevel(CONSTANTS.SCENE.MENU.NAME)
+            this.changelevel(CONSTANTS.SCENE.MENU.NAME);
+        }
+        this.changelevels= function () {
+            this.changelevel(CONSTANTS.SCENE.LEVELS.NAME);
         }
 
         this.historyButton.on('pointerover', this.changehistoryon,this);
         this.historyButton.on('pointerout', this.changehistoryoff,this);
+        this.historyButton.on('pointerdown', this.changelevels, this)
         this.arcadeButton.on('pointerover', this.changearcadeon,this);
         this.arcadeButton.on('pointerout', this.changearcadeoff,this);
         this.backButton.on('pointerout', this.changebackoff,this);
         this.backButton.on('pointerover', this.changebackon,this);
         this.backButton.on('pointerdown', this.changemenu,this);
+
 
     }
     changeButtonOn

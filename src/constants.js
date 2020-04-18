@@ -132,6 +132,7 @@ const CONSTANTS = {
             SPACING : 90,
             LOGO: {
                 Y: 100,
+                SCALE: 0.25,
             },
             BUTTON: {
                 SPACING: 90,
@@ -142,6 +143,36 @@ const CONSTANTS = {
                     BTNSIZE: 64
                 },
             },
+        },
+        LEVELS:{
+            NAME: "LevelScene",
+            CHANGEPAGESPEED: 10,
+            LOGO: {
+                Y: 100,
+                SCALING: 0.5
+            },
+            TEXT:{
+                NAME:"btm",
+                MESSAGE:"back to menu",
+                FONTSIZE: 10
+            },
+            BUTTONS:{
+                NAMES: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
+                NAMESSELECTED: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s", "13s"],
+                BTNSIZE: 64,
+                TOPSPACE: 150,
+                PADDING: 10, // PAdding in the middle
+                SPACING: 74, // Padding in the bottom
+                NEXT:{
+                    NAME: "next",
+                    NAMESELECTED: "nextSelected",
+                    NAMEMAXPAGES: "maxPages"
+                },
+                BACK:{
+                    NAME: "back",
+                    NAMESELECTED: "backSelected"
+                }
+            }
         }
     },
 };
