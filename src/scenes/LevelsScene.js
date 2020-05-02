@@ -6,7 +6,7 @@ class LevelsScene extends Phaser.Scene{
     next;
     back;
     pageNr;
-    changepage;
+    changePage;
     leftOut;
     leftMid;
     rightOut;
@@ -197,7 +197,7 @@ class LevelsScene extends Phaser.Scene{
     }
 
     loadPage(amount){
-        this.changepage = false;
+        this.changePage = false;
         this.pageNr += amount;
 
         this.button1.key = this.pageNr * 4 + 1;

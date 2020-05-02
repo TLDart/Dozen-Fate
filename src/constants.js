@@ -9,7 +9,7 @@ const CONSTANTS = {
         SPEED: {
             TILE: 0.2,
             TEXT: 1000,
-            TRANSITION: 2000,
+            TRANSITION: 3000,
             MENUTRANSITION: 0,
         },
         BACKGROUND: {
@@ -45,11 +45,11 @@ const CONSTANTS = {
             LOGO: {
                 Y: 200
             },
-            BACKGROUND_MUSIC:{
+            BACKGROUND_MUSIC: {
                 NAME: "backGroundMusic",
-                CONFIG : {
-                    mute : false,
-                    volume : 0.3,
+                CONFIG: {
+                    mute: false,
+                    volume: 0.3,
                     detune: 0,
                     seek: 0,
                     loop: true,
@@ -65,7 +65,7 @@ const CONSTANTS = {
                 Y: 100,
             },
             BUTTON: {
-                SPACING : 90,
+                SPACING: 90,
                 PLAY: {
                     NAME: "playButton",
                 },
@@ -91,11 +91,11 @@ const CONSTANTS = {
                     NAME: "settingsButtonSelected",
                 },
             },
-            BACKGROUND_MUSIC:{
+            BACKGROUND_MUSIC: {
                 NAME: "backGroundMusic2",
-                CONFIG : {
-                    mute : false,
-                    volume : 0.5,
+                CONFIG: {
+                    mute: false,
+                    volume: 0.5,
                     detune: 0,
                     seek: 0,
                     loop: true,
@@ -103,9 +103,9 @@ const CONSTANTS = {
                 },
             },
         },
-        MENUPLAY:{
+        MENUPLAY: {
             NAME: "PlayScene",
-            SPACING : 90,
+            SPACING: 90,
             LOGO: {
                 Y: 100,
             },
@@ -119,7 +119,7 @@ const CONSTANTS = {
                     NAME: "ArcadeButton",
                     NAMESELECTED: "ArcadeButtonSelected",
                 },
-                BACK:{
+                BACK: {
                     NAME: "backbtn",
                     NAMESELECTED: "backbtnSelected",
                     PADDING: 10,
@@ -127,16 +127,16 @@ const CONSTANTS = {
                 },
             },
         },
-        HELP:{
+        HELP: {
             NAME: "HelpScene",
-            SPACING : 90,
+            SPACING: 90,
             LOGO: {
                 Y: 100,
                 SCALE: 0.25,
             },
             BUTTON: {
                 SPACING: 90,
-                BACK:{
+                BACK: {
                     NAME: "backbtn",
                     NAMESELECTED: "backbtnSelected",
                     PADDING: 10,
@@ -144,31 +144,31 @@ const CONSTANTS = {
                 },
             },
         },
-        LEVELS:{
+        LEVELS: {
             NAME: "LevelScene",
             CHANGEPAGESPEED: 10,
             LOGO: {
                 Y: 100,
                 SCALING: 0.5
             },
-            TEXT:{
-                NAME:"btm",
-                MESSAGE:"back to menu",
+            TEXT: {
+                NAME: "btm",
+                MESSAGE: "back to menu",
                 FONTSIZE: 10
             },
-            BUTTONS:{
+            BUTTONS: {
                 NAMES: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
                 NAMESSELECTED: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s", "13s"],
                 BTNSIZE: 64,
                 TOPSPACE: 150,
-                PADDING: 10, // PAdding in the middle
+                PADDING: 10, // Padding in the middle
                 SPACING: 74, // Padding in the bottom
-                NEXT:{
+                NEXT: {
                     NAME: "next",
                     NAMESELECTED: "nextSelected",
                     NAMEMAXPAGES: "maxPages"
                 },
-                BACK:{
+                BACK: {
                     NAME: "back",
                     NAMESELECTED: "backSelected"
                 }

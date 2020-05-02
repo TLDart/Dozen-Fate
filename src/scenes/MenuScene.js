@@ -1,4 +1,5 @@
 var music = null;
+
 class MenuScene extends Phaser.Scene {
     logo;
     background;
@@ -12,10 +13,13 @@ class MenuScene extends Phaser.Scene {
         super(CONSTANTS.SCENE.MENU.NAME);
     }
 
+    init() {
+        console.log("init menuscene");
+    }
+
     preload() {
         console.log("preload menuscene");
         //Preload Assets
-
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
         this.load.image(CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME, "assets/Sprites/UI/MenuPlayBlue.png");
@@ -33,49 +37,70 @@ class MenuScene extends Phaser.Scene {
     create() {
         console.log("create menuscene");
         // Add to this scene
-
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(0);
+        // Logo listener
+        this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
+        // + Add to this scene
         this.playButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING, CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME).setInteractive();
         this.helpButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 2, CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME).setInteractive();
         this.storeButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 3, CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME).setInteractive();
         this.settingsButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 4, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME).setInteractive();
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
         // Listeners
-        this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
         music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
         //music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
-        this.changeplay = function () {this.changelevel(CONSTANTS.SCENE.MENUPLAY.NAME)}
-        this.changehelp = function() {this.changelevel(CONSTANTS.SCENE.HELP.NAME)}
-        this.activePlay = function(){this.activate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME);}
-        this.inactivePlay =function(){this.deactivate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);}
-        this.activeHelp = function(){this.activate(this.helpButton, CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);}
-        this.inactiveHelp= function(){this.deactivate(this.helpButton, CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);}
-        this.activeStore = function (){this.activate(this.storeButton, CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);}
-        this.inactiveStore = function (){this.deactivate(this.storeButton, CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);}
-        this. activeSettings= function (){this.activate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);}
-        this.inactiveSettings = function (){this.deactivate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);}
+        this.changeplay = function () {
+            this.changelevel(CONSTANTS.SCENE.MENUPLAY.NAME)
+        }
+        this.changehelp = function () {
+            this.changelevel(CONSTANTS.SCENE.HELP.NAME)
+        }
+        this.activePlay = function () {
+            this.activate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME);
+        }
+        this.inactivePlay = function () {
+            this.deactivate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME);
+        }
+        this.activeHelp = function () {
+            this.activate(this.helpButton, CONSTANTS.SCENE.MENU.BUTTON.HELPSELECTED.NAME);
+        }
+        this.inactiveHelp = function () {
+            this.deactivate(this.helpButton, CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME);
+        }
+        this.activeStore = function () {
+            this.activate(this.storeButton, CONSTANTS.SCENE.MENU.BUTTON.STORESELECTED.NAME);
+        }
+        this.inactiveStore = function () {
+            this.deactivate(this.storeButton, CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME);
+        }
+        this.activeSettings = function () {
+            this.activate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGSSELECTED.NAME);
+        }
+        this.inactiveSettings = function () {
+            this.deactivate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);
+        }
 
-        this.playButton.on('pointerover', this.activePlay ,this);
-        this.playButton.on('pointerout', this.inactivePlay,this);
-        this.playButton.on('pointerdown', this.changeplay,this);
-        this.helpButton.on('pointerover', this.activeHelp,this);
-        this.helpButton.on('pointerout', this.inactiveHelp,this);
-        this.helpButton.on('pointerdown', this.changehelp,this);
+        this.playButton.on('pointerover', this.activePlay, this);
+        this.playButton.on('pointerout', this.inactivePlay, this);
+        this.playButton.on('pointerdown', this.changeplay, this);
+        this.helpButton.on('pointerover', this.activeHelp, this);
+        this.helpButton.on('pointerout', this.inactiveHelp, this);
+        this.helpButton.on('pointerdown', this.changehelp, this);
         this.storeButton.on('pointerover', this.activeStore, this);
-        this.storeButton.on('pointerout', this.inactiveStore,this);
-        this.settingsButton.on('pointerover', this.activeSettings,this);
-        this.settingsButton.on('pointerout', this.inactiveSettings,this);
-
-
-
-
+        this.storeButton.on('pointerout', this.inactiveStore, this);
+        this.settingsButton.on('pointerover', this.activeSettings, this);
+        this.settingsButton.on('pointerout', this.inactiveSettings, this);
+        // In case transition complete fails
+        this.logo
     }
-    activate(button, texture){
+
+    activate(button, texture) {
         button.setTexture(texture);
         this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
     }
-    deactivate(button, texture){
+
+    deactivate(button, texture) {
         button.setTexture(texture);
     }
 
@@ -89,18 +114,20 @@ class MenuScene extends Phaser.Scene {
         this.scene.transition(config);
     }
 
-    transitionOut(progress){
+    transitionOut(progress) {
         console.log("gasdfagskfhj");
         //this.music.stop();
-        if (progress >= 0.5){
-            this.background.alpha = 1 - 4 * (progress - 0.5)**2; //perguntem-me sobre esta formula
+        if (progress >= 0.5) {
+            this.background.alpha = 1 - 4 * (progress - 0.5) ** 2; //perguntem-me sobre esta formula
         }
     }
+
     update() {
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
     }
 
     transitionComplete(ev) {
+        console.log("resized");
         this.logo.setScale(CONSTANTS.SCENE.LOGO.SCALE);
     }
 

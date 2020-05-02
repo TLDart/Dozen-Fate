@@ -68,8 +68,8 @@ class IntroScene extends Phaser.Scene {
         this.text.alpha = 1 - progress;
         this.logo.y = CONSTANTS.SCENE.INTRO.LOGO.Y - (CONSTANTS.SCENE.INTRO.LOGO.Y - CONSTANTS.SCENE.MENU.LOGO.Y) * progress;
         this.music.stop();
-        if (progress >= 0.5){
-            this.background.alpha = 1 - 4 * (progress - 0.5)**2; //perguntem-me sobre esta formula
+        if (progress >= 0.5) {
+            this.background.alpha = 1 - 4 * (progress - 0.5) ** 2; //perguntem-me sobre esta formula
         }
     }
 }
