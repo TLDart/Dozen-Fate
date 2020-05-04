@@ -32,8 +32,7 @@ class IntroScene extends Phaser.Scene {
         this.btnAudio = this.sound.add(CONSTANTS.SCENE.INTRO.TEXT.SOUND);
         this.music = this.sound.add(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.NAME);
         this.music.play(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.CONFIG);
-
-
+        //this.sound.pauseOnBlur = false;
     }
 
     update() {  // The update function updates the scene every 60hz ==> every 16ms

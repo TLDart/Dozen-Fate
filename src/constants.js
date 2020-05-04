@@ -173,6 +173,30 @@ const CONSTANTS = {
                     NAMESELECTED: "backSelected"
                 }
             }
+        },
+        INGAME: {
+            NAME:"GameScene",
+            HERO : {
+                STOP:"hero",
+                LEFT:"heroLeft",
+                RIGHT:"heroRight",
+                SPEED: 325,
+                LIFEPOINTS:3
+            },
+            ENEMY : {
+                NAMES:["redEnemy","blueEnemy","greenEnemy"],
+                SCALE: 0.8,
+                SPAWNSPEED: 2000,
+                SPEED: 10,
+                LIFEPOINTS:5
+            },
+            BULLET:{
+                NAME:"bullet",
+                SPEED:500,
+                DAMAGE:1,
+                CRITICAL:15,
+                SCALE:0.02
+            }
         }
     },
 };
