@@ -7,6 +7,7 @@ class Hero extends StarShip{
         this.bulletTexture = CONSTANTS.SCENE.INGAME.BULLET.NAME;
         this.bulletSpeedX = 0;
         this.bulletSpeedY = -CONSTANTS.SCENE.INGAME.BULLET.SPEED;
+        this.vulnerability = -1; //TODO: Polymorphism
     }
 
     moveRight(){
@@ -34,9 +35,9 @@ class Hero extends StarShip{
     }
 
     fire(){
-        var bullet = new Bullet(this.scene,this.bulletTexture,this.weaponID);
-        this.scene.bullets.add(bullet);
-        console.log("x: "+this.bulletSpeedX+"\ny: "+this.bulletSpeedY)
+        var bullet = new Bullet(this.scene,this.bulletTexture,this.weaponID,this);
+        this.scene.heroBullets.add(bullet);
+
         bullet.body.velocity.x = this.bulletSpeedX;
         bullet.body.velocity.y = this.bulletSpeedY;
     }

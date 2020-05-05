@@ -189,9 +189,10 @@ const CONSTANTS = {
                 LEFT: ["RedEnemyLeft", "blueEnemyLeft", "greenEnemyLeft"],
                 RIGHT: ["RedEnemyRight", "blueEnemyRight", "greenEnemyRight"],
                 SCALE: 0.8,
-                MOVETIME: 200,
+                ACTIONTIME: 200,
                 SPAWNSPEED: 2000,
                 MOVEPERCENTAGE: 0.2,
+                FIREPERCENTAGE:0.02,
                 SPEED: {
                     X: 150,
                     Y: 10,

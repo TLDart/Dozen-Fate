@@ -1,8 +1,6 @@
 class Bullet extends Animator {
-    constructor(scene,texture,weaponId) {
-        var x = scene.player.x;
-        var y = scene.player.y;
-        super(scene,x,y,texture,CONSTANTS.SCENE.INGAME.BULLET.SCALE);
+    constructor(scene,texture,weaponId,entity) {
+        super(scene,entity.x,entity.y,texture,CONSTANTS.SCENE.INGAME.BULLET.SCALE);
         this.weaponId = weaponId;
         this.damage = CONSTANTS.SCENE.INGAME.BULLET.DAMAGE;
         this.criticalHit = CONSTANTS.SCENE.INGAME.BULLET.CRITICAL;

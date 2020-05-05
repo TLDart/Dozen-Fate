@@ -7,21 +7,41 @@ class Enemy extends StarShip {
         this.setVelocityY(CONSTANTS.SCENE.INGAME.ENEMY.SPEED.Y);
         this.vulnerability = vulnerability + 1;
 
+        this.bulletTexture = CONSTANTS.SCENE.INGAME.BULLET.NAME;
+        this.bulletSpeedX = 0;
+        this.bulletSpeedY = CONSTANTS.SCENE.INGAME.BULLET.SPEED;
+
     }
 
     moveRight() {
         this.setVelocityX(CONSTANTS.SCENE.INGAME.ENEMY.SPEED.X * Math.random());
         this.setTexture(CONSTANTS.SCENE.INGAME.ENEMY.RIGHT[this.vulnerability - 1]);
+        this.bulletTexture = CONSTANTS.SCENE.INGAME.BULLET.LEFT; //TODO: alterar LEFT
+        this.bulletSpeedX = CONSTANTS.SCENE.INGAME.BULLET.SPEED * Math.cos(Math.PI/2 - CONSTANTS.SCENE.INGAME.HERO.SHIPANGLE);
+        this.bulletSpeedY = CONSTANTS.SCENE.INGAME.BULLET.SPEED * Math.sin(Math.PI/2 - CONSTANTS.SCENE.INGAME.HERO.SHIPANGLE);
     }
 
     moveLeft() {
         this.setVelocityX(-CONSTANTS.SCENE.INGAME.ENEMY.SPEED.X * Math.random());
         this.setTexture(CONSTANTS.SCENE.INGAME.ENEMY.LEFT[this.vulnerability - 1]);
+        this.bulletTexture = CONSTANTS.SCENE.INGAME.BULLET.RIGHT;//TODO: alterar RIGHT
+        this.bulletSpeedX = -CONSTANTS.SCENE.INGAME.BULLET.SPEED * Math.cos(Math.PI/2 - CONSTANTS.SCENE.INGAME.HERO.SHIPANGLE);
+        this.bulletSpeedY = CONSTANTS.SCENE.INGAME.BULLET.SPEED * Math.sin(Math.PI/2 - CONSTANTS.SCENE.INGAME.HERO.SHIPANGLE);
     }
 
     stop() {
         this.setVelocityX(0);
         this.setTexture(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.vulnerability - 1]);
+        this.bulletTexture = CONSTANTS.SCENE.INGAME.BULLET.NAME;
+        this.bulletSpeedX = 0;
+        this.bulletSpeedY = CONSTANTS.SCENE.INGAME.BULLET.SPEED;
+    }
+
+    fire(){
+        var bullet = new Bullet(this.scene,this.bulletTexture,-1,this);
+        this.scene.enemyBullets.add(bullet);
+        bullet.body.velocity.x = this.bulletSpeedX;
+        bullet.body.velocity.y = this.bulletSpeedY;
     }
 
     update() {

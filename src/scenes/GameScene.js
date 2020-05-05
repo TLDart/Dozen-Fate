@@ -67,10 +67,12 @@ class GameScene extends Phaser.Scene {
         this.weapon[0].focus(true);
         // Creating Group for Enemies
         this.enemies = this.physics.add.group();
-        // Creating a Group for Bullets
-        this.bullets = this.physics.add.group();
+        // Creating a Group for Hero Bullets
+        this.heroBullets = this.physics.add.group();
+        // Creating a Group for Enemy Bullets
+        this.enemyBullets = this.physics.add.group();
         // Bounding Box Collisions
-        this.physics.add.overlap(this.bullets, this.enemies, this.bulletHitHandler, null, this);
+        this.physics.add.overlap(this.heroBullets, this.enemies, this.bulletHitHandler, null, this);
     }
 
     update() {
@@ -83,15 +85,15 @@ class GameScene extends Phaser.Scene {
             new Enemy(this);
         }
         // To stop all enemy ships when moveTime reaches half of self
-        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.MOVETIME / 2) {
+        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME / 2) {
             for (let i = 0; i < this.enemies.getChildren().length; i++) {
                 this.enemies.getChildren()[i].stop();
             }
         }
         // To move enemy ships when moveTime reaches end of self
-        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.MOVETIME) {
+        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME) {
             this.moveEnemyTimer = 0;
-            this.moveEnemiesHandler();
+            this.enemiesActionHandler();
         }
         // To move Player
         this.movePlayerHandler();
@@ -135,23 +137,26 @@ class GameScene extends Phaser.Scene {
         this.weapon[this.player.weaponID - 1].focus(true);
     }
 
-    moveEnemiesHandler() {
+    enemiesActionHandler() {
         for (let i = 0; i < this.enemies.getChildren().length; i++) {
+            var enemy = this.enemies.getChildren()[i];
             if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE) {
-                var enemy = this.enemies.getChildren()[i];
                 if (Math.random() < 0.5) {
                     enemy.moveRight();
                 } else {
                     enemy.moveLeft();
                 }
             }
+            if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.FIREPERCENTAGE){
+                enemy.fire();
+            }
         }
     }
 
     renderer() {
         //console.log("bullets:" + this.bullets.getChildren().length + "\nenemies " +this.enemies.getChildren().length)
-        for (let i = 0; i < this.bullets.getChildren().length; i++) {
-            var b = this.bullets.getChildren()[i];
+        for (let i = 0; i < this.heroBullets.getChildren().length; i++) {
+            var b = this.heroBullets.getChildren()[i];
             b.update();
         }
         for (let i = 0; i < this.enemies.getChildren().length; i++) {

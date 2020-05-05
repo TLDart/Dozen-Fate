@@ -3,5 +3,5 @@ class StarShip extends Animator {
         super(scene,x,y,texture,scale);
         this.lifePoints = lifePoints;
     }
-
+    // TODO: Polymorphism in for .move(), .shoot() etc
 }
