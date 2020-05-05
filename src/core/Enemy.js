@@ -42,6 +42,7 @@ class Enemy extends StarShip {
         this.scene.enemyBullets.add(bullet);
         bullet.body.velocity.x = this.bulletSpeedX;
         bullet.body.velocity.y = this.bulletSpeedY;
+        bullet.angle = 180;
     }
 
     update() {
