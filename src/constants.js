@@ -175,27 +175,43 @@ const CONSTANTS = {
             }
         },
         INGAME: {
-            NAME:"GameScene",
-            HERO : {
-                STOP:"hero",
-                LEFT:"heroLeft",
-                RIGHT:"heroRight",
+            NAME: "GameScene",
+            HERO: {
+                STOP: "hero",
+                LEFT: "heroLeft",
+                RIGHT: "heroRight",
                 SPEED: 325,
-                LIFEPOINTS:3
+                LIFEPOINTS: 3
             },
-            ENEMY : {
-                NAMES:["redEnemy","blueEnemy","greenEnemy"],
+            ENEMY: {
+                NAMES: ["redEnemy", "blueEnemy", "greenEnemy"],
+                LEFT:["RedEnemyLeft","blueEnemyLeft","greenEnemyLeft"],
+                RIGHT:["RedEnemyRight","blueEnemyRight","greenEnemyRight"],
                 SCALE: 0.8,
+                MOVETIME:200,
                 SPAWNSPEED: 2000,
-                SPEED: 10,
-                LIFEPOINTS:5
+                SPEED:{
+                    X:30,
+                    Y:10,
+                },
+                LIFEPOINTS: 5,
+
             },
-            BULLET:{
-                NAME:"bullet",
-                SPEED:500,
-                DAMAGE:1,
-                CRITICAL:15,
-                SCALE:0.02
+            WEAPON: {
+                NAMES: {
+                    NORMAL: ["redWeapon", "blueWeapon", "greenWeapon"],
+                    SELECTED: ["redWeaponSelected", "blueWeaponSelected", "greenWeaponSelected"],
+                },
+                SCALE: 0.8,
+                Y: 0.97,
+                X: [0.74, 0.84, 0.94]
+            },
+            BULLET: {
+                NAME: "bullet",
+                SPEED: 500,
+                DAMAGE: 1,
+                CRITICAL: 15,
+                SCALE: 0.02
             }
         }
     },

@@ -1,6 +1,6 @@
 class Hero extends StarShip{
     constructor(scene,lifePoints) {
-        super(scene,CONSTANTS.CANVAS.WIDTH / 2,CONSTANTS.CANVAS.HEIGHT * 0.9,CONSTANTS.SCENE.INGAME.HERO.STOP,CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
+        super(scene,CONSTANTS.CANVAS.WIDTH / 2,CONSTANTS.CANVAS.HEIGHT * 0.88,CONSTANTS.SCENE.INGAME.HERO.STOP,CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
         this.setCollideWorldBounds(true);
         this.speed = CONSTANTS.SCENE.INGAME.HERO.SPEED;
         //TODO: meter nas constantes
