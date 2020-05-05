@@ -1,6 +1,7 @@
 class GameScene extends Phaser.Scene {
     timer;
     moveEnemyTimer;
+
     constructor() {
         super(CONSTANTS.SCENE.INGAME.NAME);
         this.timer = 0;
@@ -13,13 +14,18 @@ class GameScene extends Phaser.Scene {
         this.spawnSpeed = config.spawnSpeed;
         this.maxEnemies = config.maxEnemies;
         this.hero = config.hero;
+        this.movePercentage = config.movePercentage
+        this.moveTime = config.moveTime
     }
     */
     preload() {
+        // Load Background
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
+        // Load Hero
         this.load.image(CONSTANTS.SCENE.INGAME.HERO.STOP, "assets/Sprites/Ally/heroi_6.png");
         this.load.image(CONSTANTS.SCENE.INGAME.HERO.LEFT, "assets/Sprites/Ally/heroi_6_e.png");
         this.load.image(CONSTANTS.SCENE.INGAME.HERO.RIGHT, "assets/Sprites/Ally/heroi_6_d.png");
+        // Load Enemies
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0], "assets/Sprites/Enemy/evil_1.png");
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.LEFT[0], "assets/Sprites/Enemy/evil_1_d.png");
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.RIGHT[0], "assets/Sprites/Enemy/evil_1_e.png");
@@ -29,15 +35,17 @@ class GameScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[2], "assets/Sprites/Enemy/evil_3.png");
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.LEFT[2], "assets/Sprites/Enemy/evil_3_d.png");
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.RIGHT[2], "assets/Sprites/Enemy/evil_3_e.png");
+        // Load Bullets
         this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAME, "assets/Sprites/Others/bullet.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.LEFT, "assets/Sprites/Others/bullet_l.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.RIGHT, "assets/Sprites/Others/bullet_r.png");
+        // Load Weapons
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[0], "assets/Sprites/Weapon/arma1.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[0],"assets/Sprites/Weapon/arma1_s.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[0], "assets/Sprites/Weapon/arma1_s.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[1], "assets/Sprites/Weapon/arma2.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[1],"assets/Sprites/Weapon/arma2_s.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[1], "assets/Sprites/Weapon/arma2_s.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[2], "assets/Sprites/Weapon/arma3.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[2],"assets/Sprites/Weapon/arma3_s.png");
-
-        //TODO: LOAD WEAPONS and add them on create()
+        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[2], "assets/Sprites/Weapon/arma3_s.png");
     }
 
     create() {
@@ -52,9 +60,10 @@ class GameScene extends Phaser.Scene {
         // Add Hero
         this.player = new Hero(this);
         // Add Hero Weapons
-        this.weapon[0] = new Weapon(this,1);
-        this.weapon[1] = new Weapon(this,2);
-        this.weapon[2] = new Weapon(this,3);
+        this.weapon[0] = new Weapon(this, 1);
+        this.weapon[1] = new Weapon(this, 2);
+        this.weapon[2] = new Weapon(this, 3);
+        // Starting weapon
         this.weapon[0].focus(true);
         // Creating Group for Enemies
         this.enemies = this.physics.add.group();
@@ -65,21 +74,30 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+        // Increments
         this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
         this.moveEnemyTimer += 16;
+        // Spawner
         if (this.timer > CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED) {
             this.timer = 0;
             new Enemy(this);
+        }
+        // To stop all enemy ships when moveTime reaches half of self
+        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.MOVETIME / 2) {
             for (let i = 0; i < this.enemies.getChildren().length; i++) {
                 this.enemies.getChildren()[i].stop();
             }
         }
-        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.MOVETIME){
+        // To move enemy ships when moveTime reaches end of self
+        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.MOVETIME) {
             this.moveEnemyTimer = 0;
             this.moveEnemiesHandler();
         }
+        // To move Player
         this.movePlayerHandler();
+        // To shoot/switch weapon
         this.weaponHandler();
+        // To update game objects on canvas
         this.renderer();
         console.log("Weapon: " + CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.player.weaponID - 1])
 
@@ -111,17 +129,17 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-    swapFocus(weaponId){
+    swapFocus(weaponId) {
         this.weapon[this.player.weaponID - 1].focus(false);
         this.player.weaponID = weaponId;
         this.weapon[this.player.weaponID - 1].focus(true);
     }
 
-    moveEnemiesHandler(){
+    moveEnemiesHandler() {
         for (let i = 0; i < this.enemies.getChildren().length; i++) {
-            if (Math.random() < 0.2){
+            if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE) {
                 var enemy = this.enemies.getChildren()[i];
-                if(Math.random() < 0.5){
+                if (Math.random() < 0.5) {
                     enemy.moveRight();
                 } else {
                     enemy.moveLeft();

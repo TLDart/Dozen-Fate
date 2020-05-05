@@ -181,18 +181,20 @@ const CONSTANTS = {
                 LEFT: "heroLeft",
                 RIGHT: "heroRight",
                 SPEED: 325,
-                LIFEPOINTS: 3
+                LIFEPOINTS: 3,
+                SHIPANGLE: Math.PI / 6,   //radians
             },
             ENEMY: {
                 NAMES: ["redEnemy", "blueEnemy", "greenEnemy"],
-                LEFT:["RedEnemyLeft","blueEnemyLeft","greenEnemyLeft"],
-                RIGHT:["RedEnemyRight","blueEnemyRight","greenEnemyRight"],
+                LEFT: ["RedEnemyLeft", "blueEnemyLeft", "greenEnemyLeft"],
+                RIGHT: ["RedEnemyRight", "blueEnemyRight", "greenEnemyRight"],
                 SCALE: 0.8,
-                MOVETIME:200,
+                MOVETIME: 200,
                 SPAWNSPEED: 2000,
-                SPEED:{
-                    X:30,
-                    Y:10,
+                MOVEPERCENTAGE: 0.2,
+                SPEED: {
+                    X: 150,
+                    Y: 10,
                 },
                 LIFEPOINTS: 5,
 
@@ -208,10 +210,12 @@ const CONSTANTS = {
             },
             BULLET: {
                 NAME: "bullet",
+                LEFT: "bulletLeft",
+                RIGHT: "bulletRight",
                 SPEED: 500,
                 DAMAGE: 1,
                 CRITICAL: 15,
-                SCALE: 0.02
+                SCALE: 0.5
             }
         }
     },
