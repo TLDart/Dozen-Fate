@@ -11,7 +11,6 @@ class Enemy extends StarShip {
         this.bulletSpeedY = CONSTANTS.SCENE.INGAME.BULLET.SPEED;
         // Vulnerability
         this.vulnerability = vulnerability + 1;
-
     }
 
     moveLeft() {
@@ -47,7 +46,10 @@ class Enemy extends StarShip {
         } else if (this.lifePoints <= 0.66 * CONSTANTS.SCENE.INGAME.ENEMY.LIFEPOINTS) {
             this.setTexture(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.vulnerability - 1][1]);
         }
-
+        if (!this.scene.playing){
+            this.stop();
+            this.setVelocityY(0);
+        }
         if (this.lifePoints <= 0) {
             this.destroy();
         } else if (this.y > CONSTANTS.CANVAS.HEIGHT) {

@@ -52,12 +52,17 @@ class GameScene extends Phaser.Scene {
             frameHeight: CONSTANTS.SCENE.INGAME.HEALTHBAR.HEIGHT,
             frameWidth: CONSTANTS.SCENE.INGAME.HEALTHBAR.WIDTH
         });
+        this.load.bitmapFont(CONSTANTS.SCENE.INGAME.GAMEOVER.FONT, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt")
     }
 
     create() {
         var startingWeapon = 1;
         // Add Background
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
+        this.gameOverText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE).setOrigin().setVisible(false);
+        this.gameOverText.depth = CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH;
+        this.underText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE / 3).setOrigin().setVisible(false);
+        this.underText.depth = CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH;
         // Listeners
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -94,43 +99,73 @@ class GameScene extends Phaser.Scene {
         });
         // Health Bar
         this.healthBar = new HealthBar(this, this.heart.x, this.heart.y, this.player.lifePoints);
+        // vars
+        this.playing = true;
+        this.stopped = true;
+        this.transitionInProgress = false;
     }
 
 
     update() {
-        // Increments
-        this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
-        this.moveEnemyTimer += 16;
-        this.background.tilePositionY -= 0.2;
-        // Spawner
-        if (this.timer > CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED) {
-            this.timer = 0;
-            new Enemy(this);
-        }
-        // To stop all enemy ships when moveTime reaches half of self
-        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME / 2) {
-            for (let i = 0; i < this.enemies.getChildren().length; i++) {
-                this.enemies.getChildren()[i].stop();
+        if (this.playing) {
+            // Increments
+            this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
+            this.moveEnemyTimer += 16;
+            this.background.tilePositionY -= 0.2;
+            // Spawner
+            if (this.timer > CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED) {
+                this.timer = 0;
+                new Enemy(this);
+            }
+            // To stop all enemy ships when moveTime reaches half of self
+            if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME / 2) {
+                for (let i = 0; i < this.enemies.getChildren().length; i++) {
+                    this.enemies.getChildren()[i].stop();
+                }
+            }
+            // To move enemy ships when moveTime reaches end of self
+            if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME) {
+                this.moveEnemyTimer = 0;
+                this.enemiesActionHandler();
+            }
+            // To move Player
+            this.movePlayerHandler();
+            // To shoot/switch weapon
+            this.weaponHandler();
+            // To Handle the life bar
+            this.healthBarHandler();
+            // To update game objects on canvas
+            this.renderer();
+            /* Debug */
+            //console.log("Weapon: " + CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.player.weaponID - 1])
+            //console.log("hero life: " + this.player.lifePoints);
+            //console.log("enemies len: "+this.enemies.getChildren().length)
+            //console.log("enemies bullets: " + this.enemyBullets.getChildren().length)
+        } else if (this.stopped) {
+            this.renderer();
+            this.player.stop();
+            this.spaceTimer = 0;
+            this.gameOverText.setVisible(true);
+            this.stopped = false;
+        } else if(!this.transitionInProgress){
+            this.heart.setFrame(1); // broken heart
+            this.spaceTimer += 16; // so every real 16ms, we increment timer += 16 (ms)
+            if (this.spaceTimer > CONSTANTS.SCENE.INGAME.GAMEOVER.TIMER) {
+                this.spaceTimer = 0;
+                this.underText.visible = !this.underText.visible;
+            }
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+                this.transitionInProgress = true;
+                var config = {
+                    target: CONSTANTS.SCENE.MENU.NAME,
+                    duration: CONSTANTS.SCENE.SPEED.TRANSITION,
+                    moveBelow: true,
+                    onUpdate: this.transitionOut,
+                    data: {logoVisibility: true},
+                };
+                this.scene.transition(config);
             }
         }
-        // To move enemy ships when moveTime reaches end of self
-        if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME) {
-            this.moveEnemyTimer = 0;
-            this.enemiesActionHandler();
-        }
-        // To move Player
-        this.movePlayerHandler();
-        // To shoot/switch weapon
-        this.weaponHandler();
-        // To Handle the life bar
-        this.healthBarHandler();
-        // To update game objects on canvas
-        this.renderer();
-        /* Debug */
-        //console.log("Weapon: " + CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.player.weaponID - 1])
-        //console.log("hero life: " + this.player.lifePoints);
-        //console.log("enemies len: "+this.enemies.getChildren().length)
-        //console.log("enemies bullets: " + this.enemyBullets.getChildren().length)
     }
 
     // TODO: Procurar alternativa mais clean
@@ -208,6 +243,28 @@ class GameScene extends Phaser.Scene {
     }
 
     healthBarHandler() {
+        if (this.player.lifePoints <= 0) {
+            this.playing = false;
+        }
         this.healthBar.setPercentage(this.player.lifePoints / CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
+    }
+
+    transitionOut(progress) {
+        console.log(progress);
+        var slow = 1 - progress;
+        this.heart.alpha = slow;
+        this.player.alpha = slow;
+        this.gameOverText.alpha = slow;
+        this.underText.alpha = slow;
+        this.underText.visible = true;
+        for (let i = 0; i < 3; i++) {
+            this.weapon[i].alpha = slow;
+        }
+        for (let i = 0; i < this.enemies.getChildren().length; i++) {
+            this.enemies.getChildren()[i].alpha = slow;
+        }
+        if (progress >= 0.5) {
+            this.background.alpha = 1 - 4 * (progress - 0.5) ** 2;
+        }
     }
 }

@@ -8,14 +8,14 @@ function main() {
         width: CONSTANTS.CANVAS.WIDTH,
         height: CONSTANTS.CANVAS.HEIGHT,
         //scene: [IntroScene, MenuScene, PlayScene, HelpScene, LevelsScene],
-        scene: [GameScene],
-        physics : {
+        scene: [GameScene, MenuScene],
+        physics: {
             default: "arcade",
             arcade: {
                 debug: false,
             }
         },
-        pixelArt :false
+        pixelArt: false
     };
     var game = new Phaser.Game(config);
 }

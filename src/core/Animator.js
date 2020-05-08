@@ -3,6 +3,7 @@ class Animator extends Phaser.Physics.Arcade.Sprite{
         super(scene,x,y,texture);
         scene.physics.world.enable(this);
         scene.add.existing(this.setScale(scale));
+        // this.imageData = this.texture.getSourceImage(); TODO: passar isto pela canvas da pl4
     }
 
 }

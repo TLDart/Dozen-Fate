@@ -37,4 +37,8 @@ class Hero extends StarShip {
         bullet.body.velocity.x = this.bulletSpeedX;
         bullet.body.velocity.y = this.bulletSpeedY;
     }
+
+    resetPosition(){
+        this.setPosition(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * 0.88);
+    }
 }

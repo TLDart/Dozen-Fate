@@ -176,10 +176,22 @@ const CONSTANTS = {
         },
         INGAME: {
             NAME: "GameScene",
+            GAMEOVER: {
+                MESSAGE: "GAME OVER",
+                UNDER: {
+                    MESSAGE:"Press Space to continue",
+                    Y : 0.52,
+                },
+                FONTSIZE: 50,
+                FONT: "joystix",
+                DEPTH: 200,
+                Y: 0.45,
+                TIMER : 700,
+            },
             HERO: {
                 NAME: "hero",
                 SPEED: 325,                 // Speed of the Hero ship
-                LIFEPOINTS: 100,              // Lifepoints of the Hero ship
+                LIFEPOINTS: 1,              // Lifepoints of the Hero ship
                 SHIPANGLE: Math.PI / 9,     // == (20 degrees) : radians of the angle that the ship makes when moving sideways
                 SHIPDEGREES: 20,
                 VULNERABILITY: 0
@@ -213,7 +225,7 @@ const CONSTANTS = {
             BULLET: {
                 NAMES: ["regularBullet", "redBullet", "blueBullet", "greenBullet"],
                 SPEED: 500,             // Bullet Speed
-                DAMAGE: 1,              // Bullet Regular Damage
+                DAMAGE: 2,              // Bullet Regular Damage
                 CRITICAL: 15,           // Bullet Critical Damage (same color)
                 SCALE: 0.5
             },

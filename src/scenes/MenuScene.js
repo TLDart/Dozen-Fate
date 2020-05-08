@@ -13,8 +13,9 @@ class MenuScene extends Phaser.Scene {
         super(CONSTANTS.SCENE.MENU.NAME);
     }
 
-    init() {
+    init(data) {
         console.log("init menuscene");
+        this.logoStartVisible = data.logoVisibility;
     }
 
     preload() {
@@ -38,7 +39,7 @@ class MenuScene extends Phaser.Scene {
         console.log("create menuscene");
         // Add to this scene
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
-        this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(0);
+        this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE).setVisible(this.logoStartVisible);
         // Logo listener
         this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
         // + Add to this scene
@@ -110,6 +111,7 @@ class MenuScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
+            data: true,
         };
         this.scene.transition(config);
     }
@@ -127,8 +129,7 @@ class MenuScene extends Phaser.Scene {
     }
 
     transitionComplete(ev) {
-        console.log("resized");
-        this.logo.setScale(CONSTANTS.SCENE.LOGO.SCALE);
+        this.logo.visible = true;
     }
 
 

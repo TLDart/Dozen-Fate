@@ -26,7 +26,7 @@ class IntroScene extends Phaser.Scene {
         // Add to this scene
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
-        this.text = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.TEXT.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INTRO.TEXT.MESSAGE, CONSTANTS.SCENE.INTRO.TEXT.FONTSIZE).setOrigin();
+        this.text = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.TEXT.Y, CONSTANTS.SCENE.INGAME.GAMEOVER.FONT, CONSTANTS.SCENE.INTRO.TEXT.MESSAGE, CONSTANTS.SCENE.INTRO.TEXT.FONTSIZE).setOrigin();
         // Listeners
         this.input.keyboard.on(CONSTANTS.SCENE.INTRO.CONTINUE, this.spaceHandler, this);
         this.btnAudio = this.sound.add(CONSTANTS.SCENE.INTRO.TEXT.SOUND);
@@ -44,7 +44,6 @@ class IntroScene extends Phaser.Scene {
                 this.text.visible = !this.text.visible;
             }
         }
-
     }
 
     spaceHandler(ev) {
@@ -56,6 +55,7 @@ class IntroScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.TRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
+            data : {logoVisibility:false},
         };
         this.scene.transition(config);
         this.btnAudio.play();

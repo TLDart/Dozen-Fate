@@ -10,7 +10,8 @@ class HealthBar extends Phaser.GameObjects.Rectangle {
     }
 
     setPercentage(percentage) {
-        this.setSize(CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.WIDTH * percentage, CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.HEIGHT);
+        var width = CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.WIDTH * percentage;
+        this.setSize(width <= 0 ? 0 : width, CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.HEIGHT);
         this.fillColor = this.gradient(1 - percentage);
     }
 

@@ -20,7 +20,7 @@ class Bullet extends Animator {
     }
 
     update() {
-        if (this.y < 0 || this.y > CONSTANTS.CANVAS.HEIGHT) {
+        if (this.y < 0 || this.y > CONSTANTS.CANVAS.HEIGHT || !this.scene.playing) {
             this.destroy();
         }
     }
