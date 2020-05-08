@@ -15,40 +15,47 @@ class GameScene extends Phaser.Scene {
         this.maxEnemies = config.maxEnemies;
         this.hero = config.hero;
         this.movePercentage = config.movePercentage
+        this.shootPercentage = config.shootPercentage
         this.moveTime = config.moveTime
     }
     */
     preload() {
         // Load Background
+        var hero = 6;
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         // Load Hero
-        this.load.image(CONSTANTS.SCENE.INGAME.HERO.STOP, "assets/Sprites/Ally/heroi_6.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.HERO.LEFT, "assets/Sprites/Ally/heroi_6_e.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.HERO.RIGHT, "assets/Sprites/Ally/heroi_6_d.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME, "assets/Sprites/Ally/heroi_" + hero + ".png");
         // Load Enemies
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0], "assets/Sprites/Enemy/evil_1.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.LEFT[0], "assets/Sprites/Enemy/evil_1_d.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.RIGHT[0], "assets/Sprites/Enemy/evil_1_e.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[1], "assets/Sprites/Enemy/evil_2.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.LEFT[1], "assets/Sprites/Enemy/evil_2_d.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.RIGHT[1], "assets/Sprites/Enemy/evil_2_e.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[2], "assets/Sprites/Enemy/evil_3.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.LEFT[2], "assets/Sprites/Enemy/evil_3_d.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.RIGHT[2], "assets/Sprites/Enemy/evil_3_e.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][0], "assets/Sprites/Enemy/evil_1.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][1], "assets/Sprites/Enemy/evil_1_66.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][2], "assets/Sprites/Enemy/evil_1_33.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[1][0], "assets/Sprites/Enemy/evil_2.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[1][1], "assets/Sprites/Enemy/evil_2_66.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[1][2], "assets/Sprites/Enemy/evil_2_33.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[2][0], "assets/Sprites/Enemy/evil_3.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[2][1], "assets/Sprites/Enemy/evil_3_66.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[2][2], "assets/Sprites/Enemy/evil_3_33.png");
         // Load Bullets
-        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAME, "assets/Sprites/Others/bullet.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.LEFT, "assets/Sprites/Others/bullet_l.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.RIGHT, "assets/Sprites/Others/bullet_r.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[0], "assets/Sprites/Others/tiro_inimigo.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[1], "assets/Sprites/Others/tiro_vermelho.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[2], "assets/Sprites/Others/tiro_azul.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[3], "assets/Sprites/Others/tiro_verde.png");
         // Load Weapons
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[0], "assets/Sprites/Weapon/arma1.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[0], "assets/Sprites/Weapon/arma1_s.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[1], "assets/Sprites/Weapon/arma2.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[1], "assets/Sprites/Weapon/arma2_s.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[2], "assets/Sprites/Weapon/arma3.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[0], "assets/Sprites/Weapon/arma1_s.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[1], "assets/Sprites/Weapon/arma2_s.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[2], "assets/Sprites/Weapon/arma3_s.png");
+        // Load Health Bar frame
+        this.load.spritesheet(CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME, "assets/sprites/Others/bar_frame.png", {
+            frameHeight: CONSTANTS.SCENE.INGAME.HEALTHBAR.HEIGHT,
+            frameWidth: CONSTANTS.SCENE.INGAME.HEALTHBAR.WIDTH
+        });
     }
 
     create() {
+        var startingWeapon = 1;
         // Add Background
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         // Listeners
@@ -58,13 +65,14 @@ class GameScene extends Phaser.Scene {
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         // Add Hero
-        this.player = new Hero(this);
-        // Add Hero Weapons
-        this.weapon[0] = new Weapon(this, 1);
-        this.weapon[1] = new Weapon(this, 2);
-        this.weapon[2] = new Weapon(this, 3);
+        this.player = new Hero(this, startingWeapon);
+        // Weapons
+        for (let i = 0; i < 3; i++) {
+            this.weapon[i] = new Weapon(this, i + 1);
+            this.weapon[i].depth = CONSTANTS.SCENE.INGAME.WEAPON.DEPTH;
+        }
         // Starting weapon
-        this.weapon[0].focus(true);
+        this.weapon[startingWeapon - 1].focus(true);
         // Creating Group for Enemies
         this.enemies = this.physics.add.group();
         // Creating a Group for Hero Bullets
@@ -72,13 +80,28 @@ class GameScene extends Phaser.Scene {
         // Creating a Group for Enemy Bullets
         this.enemyBullets = this.physics.add.group();
         // Bounding Box Collisions
-        this.physics.add.overlap(this.heroBullets, this.enemies, this.bulletHitHandler, null, this);
+        this.physics.add.overlap(this.enemies, this.heroBullets, this.bulletHitHandler, null, this);
+        this.physics.add.overlap(this.player, this.enemyBullets, this.bulletHitHandler, null, this);
+        this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollideHandler, null, this);
+        //Heart and Animation
+        this.heart = this.add.sprite(CONSTANTS.CANVAS.WIDTH * CONSTANTS.SCENE.INGAME.HEALTHBAR.XPERCENTAGE, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.HEALTHBAR.YPERCENTAGE, CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME).setOrigin(0, 0).setScale(CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE);
+        this.heart.depth = 100;
+        this.anims.create({
+            key: CONSTANTS.SCENE.INGAME.HEALTHBAR.ANIMATION,
+            frameRate: 3,
+            repeat: 1,
+            frames: this.anims.generateFrameNumbers(CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME, {frames: [1, 0]})
+        });
+        // Health Bar
+        this.healthBar = new HealthBar(this, this.heart.x, this.heart.y, this.player.lifePoints);
     }
+
 
     update() {
         // Increments
         this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
         this.moveEnemyTimer += 16;
+        this.background.tilePositionY -= 0.2;
         // Spawner
         if (this.timer > CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED) {
             this.timer = 0;
@@ -99,10 +122,15 @@ class GameScene extends Phaser.Scene {
         this.movePlayerHandler();
         // To shoot/switch weapon
         this.weaponHandler();
+        // To Handle the life bar
+        this.healthBarHandler();
         // To update game objects on canvas
         this.renderer();
-        console.log("Weapon: " + CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.player.weaponID - 1])
-
+        /* Debug */
+        //console.log("Weapon: " + CONSTANTS.SCENE.INGAME.ENEMY.NAMES[this.player.weaponID - 1])
+        //console.log("hero life: " + this.player.lifePoints);
+        //console.log("enemies len: "+this.enemies.getChildren().length)
+        //console.log("enemies bullets: " + this.enemyBullets.getChildren().length)
     }
 
     // TODO: Procurar alternativa mais clean
@@ -135,6 +163,7 @@ class GameScene extends Phaser.Scene {
         this.weapon[this.player.weaponID - 1].focus(false);
         this.player.weaponID = weaponId;
         this.weapon[this.player.weaponID - 1].focus(true);
+        this.player.bulletTexture = CONSTANTS.SCENE.INGAME.BULLET.NAMES[this.player.weaponID];
     }
 
     enemiesActionHandler() {
@@ -142,12 +171,12 @@ class GameScene extends Phaser.Scene {
             var enemy = this.enemies.getChildren()[i];
             if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE) {
                 if (Math.random() < 0.5) {
-                    enemy.moveRight();
-                } else {
                     enemy.moveLeft();
+                } else {
+                    enemy.moveRight();
                 }
             }
-            if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.FIREPERCENTAGE){
+            if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.FIREPERCENTAGE) {
                 enemy.fire();
             }
         }
@@ -156,17 +185,29 @@ class GameScene extends Phaser.Scene {
     renderer() {
         //console.log("bullets:" + this.bullets.getChildren().length + "\nenemies " +this.enemies.getChildren().length)
         for (let i = 0; i < this.heroBullets.getChildren().length; i++) {
-            var b = this.heroBullets.getChildren()[i];
-            b.update();
+            this.heroBullets.getChildren()[i].update();
+        }
+        for (let i = 0; i < this.enemyBullets.getChildren().length; i++) {
+            this.enemyBullets.getChildren()[i].update();
         }
         for (let i = 0; i < this.enemies.getChildren().length; i++) {
-            var enemy = this.enemies.getChildren()[i];
-            enemy.update();
+            this.enemies.getChildren()[i].update();
         }
     }
 
-    bulletHitHandler(bullet, enemy) {
+    bulletHitHandler(ship, bullet) {
         //TODO: if (pixel perfect) do
-        bullet.doDamage(enemy);
+        bullet.doDamage(ship);
+    }
+
+    playerEnemyCollideHandler(player, enemy) {
+        //TODO: if (pixel perfect) do
+        player.lifePoints -= CONSTANTS.SCENE.INGAME.ENEMY.DAMAGEHEROCOLLISION;
+        this.heart.play(CONSTANTS.SCENE.INGAME.HEALTHBAR.ANIMATION);
+        enemy.destroy();
+    }
+
+    healthBarHandler() {
+        this.healthBar.setPercentage(this.player.lifePoints / CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
     }
 }

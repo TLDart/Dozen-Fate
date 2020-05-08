@@ -14,7 +14,8 @@ function main() {
             arcade: {
                 debug: false,
             }
-        }
+        },
+        pixelArt :false
     };
     var game = new Phaser.Game(config);
 }

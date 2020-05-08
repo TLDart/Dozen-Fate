@@ -177,27 +177,27 @@ const CONSTANTS = {
         INGAME: {
             NAME: "GameScene",
             HERO: {
-                STOP: "hero",
-                LEFT: "heroLeft",
-                RIGHT: "heroRight",
-                SPEED: 325,
-                LIFEPOINTS: 3,
-                SHIPANGLE: Math.PI / 6,   //radians
+                NAME: "hero",
+                SPEED: 325,                 // Speed of the Hero ship
+                LIFEPOINTS: 100,              // Lifepoints of the Hero ship
+                SHIPANGLE: Math.PI / 9,     // == (20 degrees) : radians of the angle that the ship makes when moving sideways
+                SHIPDEGREES: 20,
+                VULNERABILITY: 0
             },
             ENEMY: {
-                NAMES: ["redEnemy", "blueEnemy", "greenEnemy"],
-                LEFT: ["RedEnemyLeft", "blueEnemyLeft", "greenEnemyLeft"],
-                RIGHT: ["RedEnemyRight", "blueEnemyRight", "greenEnemyRight"],
+                NAMES: [["redEnemy", "red66", "red33"], ["blueEnemy", "blue66", "blue33"], ["greenEnemy", "green66", "green33"]],
                 SCALE: 0.8,
-                ACTIONTIME: 200,
-                SPAWNSPEED: 2000,
-                MOVEPERCENTAGE: 0.2,
-                FIREPERCENTAGE:0.02,
+                ACTIONTIME: 200,        // timer for action time of the enemy ships (move and shoot)
+                SPAWNSPEED: 1500,       // Every {SPAWNSPEED} seconds, an enemy ship is spawned
+                MOVEPERCENTAGE: 0.2,    // Every {ACTIONTIME} seconds, {MOVEPERCENTAGE} of the enemy ships move
+                FIREPERCENTAGE: 0.02,    // Every {ACTIONTIME} seconds, {FIREPERCENTAGE} of the enemy ships shoot
                 SPEED: {
                     X: 150,
-                    Y: 10,
+                    Y: 40,
                 },
-                LIFEPOINTS: 5,
+                LIFEPOINTS: 5,          // Life points of each individual ship
+                DAMAGEBOTTOM: 1,        // Damage that the ship deals when it transposes canvas.height
+                DAMAGEHEROCOLLISION: 1   // Damage that the ship deals when it collides with the player
 
             },
             WEAPON: {
@@ -205,18 +205,36 @@ const CONSTANTS = {
                     NORMAL: ["redWeapon", "blueWeapon", "greenWeapon"],
                     SELECTED: ["redWeaponSelected", "blueWeaponSelected", "greenWeaponSelected"],
                 },
+                DEPTH: 100,
                 SCALE: 0.8,
                 Y: 0.97,
                 X: [0.74, 0.84, 0.94]
             },
             BULLET: {
-                NAME: "bullet",
-                LEFT: "bulletLeft",
-                RIGHT: "bulletRight",
-                SPEED: 500,
-                DAMAGE: 1,
-                CRITICAL: 15,
+                NAMES: ["regularBullet", "redBullet", "blueBullet", "greenBullet"],
+                SPEED: 500,             // Bullet Speed
+                DAMAGE: 1,              // Bullet Regular Damage
+                CRITICAL: 15,           // Bullet Critical Damage (same color)
                 SCALE: 0.5
+            },
+            HEALTHBAR: {
+                NAME: "healthBar",
+                ANIMATION: "hurt",
+                WIDTH: 192,
+                HEIGHT: 64,
+                SCALE: 0.75,
+                DEPTH: 90,
+                STARTCOLOR: 0x00ff00,
+                XPERCENTAGE: 0.01, //0.01
+                YPERCENTAGE: 0.93,   //0.93
+                PADDING: {
+                    X: 40,
+                    Y: 16,
+                },
+                RECTANGLE: {
+                    WIDTH: 148,
+                    HEIGHT: 26
+                }
             }
         }
     },
