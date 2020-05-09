@@ -8,7 +8,8 @@ function main() {
         width: CONSTANTS.CANVAS.WIDTH,
         height: CONSTANTS.CANVAS.HEIGHT,
         //scene: [IntroScene, MenuScene, PlayScene, HelpScene, LevelsScene],
-        scene: [GameScene, MenuScene],
+        //scene: [GameScene, MenuScene],
+        scene: [GameScene, QuitScene, MenuScene],
         physics: {
             default: "arcade",
             arcade: {

@@ -22,6 +22,9 @@ class GameScene extends Phaser.Scene {
     preload() {
         // Load Background
         var hero = 6;
+        // Load win/esc menu
+        this.load.image(CONSTANTS.SCENE.INGAME.MENU.NAME,"assets/Sprites/UI/LevelWin.png");
+        // Load Background
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         // Load Hero
         this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME, "assets/Sprites/Ally/heroi_" + hero + ".png");
@@ -57,15 +60,16 @@ class GameScene extends Phaser.Scene {
 
     create() {
         var startingWeapon = 1;
-        // Add Background
+        // Add Background, UI and Texts
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.gameOverText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE).setOrigin().setVisible(false);
         this.gameOverText.depth = CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH;
         this.underText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE / 3).setOrigin().setVisible(false);
         this.underText.depth = CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH;
-        // Listeners
+        // Keyboard Listeners
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.escape = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -76,19 +80,15 @@ class GameScene extends Phaser.Scene {
             this.weapon[i] = new Weapon(this, i + 1);
             this.weapon[i].depth = CONSTANTS.SCENE.INGAME.WEAPON.DEPTH;
         }
-        // Starting weapon
-        this.weapon[startingWeapon - 1].focus(true);
-        // Creating Group for Enemies
+        this.weapon[startingWeapon - 1].focus(true);    // Starting weapon
+        // Creating Groups and Bounding Box Collisions
         this.enemies = this.physics.add.group();
-        // Creating a Group for Hero Bullets
         this.heroBullets = this.physics.add.group();
-        // Creating a Group for Enemy Bullets
         this.enemyBullets = this.physics.add.group();
-        // Bounding Box Collisions
         this.physics.add.overlap(this.enemies, this.heroBullets, this.bulletHitHandler, null, this);
         this.physics.add.overlap(this.player, this.enemyBullets, this.bulletHitHandler, null, this);
         this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollideHandler, null, this);
-        //Heart and Animation
+        // Heart Structure and Animation
         this.heart = this.add.sprite(CONSTANTS.CANVAS.WIDTH * CONSTANTS.SCENE.INGAME.HEALTHBAR.XPERCENTAGE, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.HEALTHBAR.YPERCENTAGE, CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME).setOrigin(0, 0).setScale(CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE);
         this.heart.depth = 100;
         this.anims.create({
@@ -99,7 +99,7 @@ class GameScene extends Phaser.Scene {
         });
         // Health Bar
         this.healthBar = new HealthBar(this, this.heart.x, this.heart.y, this.player.lifePoints);
-        // vars
+        // Update Function Control Vars
         this.playing = true;
         this.stopped = true;
         this.transitionInProgress = false;
@@ -179,6 +179,7 @@ class GameScene extends Phaser.Scene {
         } else {
             this.player.stop();
         }
+
     }
 
     weaponHandler() {
@@ -227,6 +228,13 @@ class GameScene extends Phaser.Scene {
         }
         for (let i = 0; i < this.enemies.getChildren().length; i++) {
             this.enemies.getChildren()[i].update();
+        }
+        if (this.stopped && Phaser.Input.Keyboard.JustDown(this.escape)) {
+            this.scene.pause();
+            this.cursorKeys.left.isDown = false;
+            this.cursorKeys.right.isDown = false;
+            this.player.stop();
+            this.scene.launch("QuitScene");
         }
     }
 

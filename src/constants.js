@@ -188,10 +188,14 @@ const CONSTANTS = {
                 Y: 0.45,
                 TIMER : 700,
             },
+            MENU:{
+                NAME: "levelWin",
+
+            },
             HERO: {
                 NAME: "hero",
                 SPEED: 325,                 // Speed of the Hero ship
-                LIFEPOINTS: 1,              // Lifepoints of the Hero ship
+                LIFEPOINTS: 10,              // Lifepoints of the Hero ship
                 SHIPANGLE: Math.PI / 9,     // == (20 degrees) : radians of the angle that the ship makes when moving sideways
                 SHIPDEGREES: 20,
                 VULNERABILITY: 0
@@ -237,8 +241,8 @@ const CONSTANTS = {
                 SCALE: 0.75,
                 DEPTH: 90,
                 STARTCOLOR: 0x00ff00,
-                XPERCENTAGE: 0.01, //0.01
-                YPERCENTAGE: 0.93,   //0.93
+                XPERCENTAGE: 0.01,      // 0.01
+                YPERCENTAGE: 0.93,      // 0.93
                 PADDING: {
                     X: 40,
                     Y: 16,
@@ -248,6 +252,13 @@ const CONSTANTS = {
                     HEIGHT: 26
                 }
             }
-        }
+        },
+        QUIT: {
+            NAME: "QuitScene",
+            TEXT : {
+                FONTSIZE : 16,
+                FONT : "joystix",
+            },
+        },
     },
 };
