@@ -56,6 +56,9 @@ class MenuScene extends Phaser.Scene {
         this.changehelp = function () {
             this.changelevel(CONSTANTS.SCENE.HELP.NAME)
         }
+        this.changestore= function () {
+            this.changelevel(CONSTANTS.SCENE.STORE.NAME)
+        }
         this.activePlay = function () {
             this.activate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME);
         }
@@ -89,6 +92,7 @@ class MenuScene extends Phaser.Scene {
         this.helpButton.on('pointerdown', this.changehelp, this);
         this.storeButton.on('pointerover', this.activeStore, this);
         this.storeButton.on('pointerout', this.inactiveStore, this);
+        this.storeButton.on('pointerdown', this.changestore, this);
         this.settingsButton.on('pointerover', this.activeSettings, this);
         this.settingsButton.on('pointerout', this.inactiveSettings, this);
         // In case transition complete fails

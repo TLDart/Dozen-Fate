@@ -1,5 +1,9 @@
 const CONSTANTS = {
     //Relative to the Canvas
+    GENERAL:{
+        COINS:0,
+    },
+
     CANVAS: {
         WIDTH: 500,
         HEIGHT: 600
@@ -146,6 +150,7 @@ const CONSTANTS = {
         },
         LEVELS: {
             NAME: "LevelScene",
+            MAXPAGES: 1,
             CHANGEPAGESPEED: 10,
             LOGO: {
                 Y: 100,
@@ -171,6 +176,51 @@ const CONSTANTS = {
                 BACK: {
                     NAME: "back",
                     NAMESELECTED: "backSelected"
+                }
+            }
+        },
+        STORE:{
+            NAME: "StoreScene",
+            MAXPAGES: 1,
+            SPRITESIZE: 64, // size of the sprite images
+            ROWS: 2,
+            COLS: 3,
+            ITEMS: 2* 3,
+            TEXT:{
+                MESSAGE: "BACK TO MENU",
+                NAME: "btmstore",
+                FONTSIZE: 8,
+            },
+            CODES:{
+                BUY : 0,
+                BOUGHT : 1,
+                USING: 2
+            },
+            SPRITES:{
+                SPRITENUMBER: 12,
+                COST: [1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000],
+                NAMES:  ["ship1","ship2","ship3","ship4","ship5","ship6","ship7","ship8","ship9","ship10","ship11","ship12"]
+            },
+            BUTTONS: {
+                NAMES: ["1shop", "2shop", "3shop"],
+                NAMESSELECTED: ["1ss", "2ss", "3ss"],
+                BTNWIDTH: 128,
+                BTNHEIGHT: 32,
+                TOPSPACE: 150,
+                PADDING: 25, // Padding in the middle
+                SPACING: 74, // Padding in the bottom
+                NEXT: {
+                    NAME: "next",
+                    NAMESELECTED: "nextSelected",
+                    NAMEMAXPAGES: "maxPages"
+                },
+                BACK: {
+                    NAME: "back",
+                    NAMESELECTED: "backSelected"
+                },
+                COIN:{
+                    NAME: "coin",
+                    SCALE: 0.5
                 }
             }
         },
