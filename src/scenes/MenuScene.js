@@ -13,8 +13,9 @@ class MenuScene extends Phaser.Scene {
         super(CONSTANTS.SCENE.MENU.NAME);
     }
 
-    init() {
+    init(data) {
         console.log("init menuscene");
+        console.log(data);
     }
 
     preload() {
@@ -134,6 +135,7 @@ class MenuScene extends Phaser.Scene {
         console.log("resized");
         this.logo.setScale(CONSTANTS.SCENE.LOGO.SCALE);
     }
+
 
 
 }

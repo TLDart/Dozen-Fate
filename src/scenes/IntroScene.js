@@ -23,6 +23,12 @@ class IntroScene extends Phaser.Scene {
 
     create() {
         console.log("create introscene");
+        let mockData = {
+            volume : 0.6,
+            ships : [2,1,1,0,0,0,0,0,0,0,0,0],
+            coins: 100000,
+            level: 6
+        };
         // Add to this scene
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
@@ -32,6 +38,9 @@ class IntroScene extends Phaser.Scene {
         this.btnAudio = this.sound.add(CONSTANTS.SCENE.INTRO.TEXT.SOUND);
         this.music = this.sound.add(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.NAME);
         this.music.play(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.CONFIG);
+        //this.flushCookie(mockData)
+        this.cookies = this.loadCookies();
+        //console.log(this.cookies);
         //this.sound.pauseOnBlur = false;
     }
 
@@ -56,6 +65,7 @@ class IntroScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.TRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
+            data : this.cookies
         };
         this.scene.transition(config);
         this.btnAudio.play();
@@ -71,4 +81,45 @@ class IntroScene extends Phaser.Scene {
             this.background.alpha = 1 - 4 * (progress - 0.5) ** 2; //perguntem-me sobre esta formula
         }
     }
+
+    loadCookies() {
+        let parsedData = {
+            volume : 1,
+            ships : [2].concat(new Array(CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER - 1).fill(0)),
+            coins: 0,
+            level: 0
+        };
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        ca.forEach(element => {
+            let parsedInput = element.split("=");
+           //console.log(parsedInput[0],parsedInput[1].toString());
+            if(parsedInput[0].toString() === " volume"){
+                console.log("here")
+                parsedData.volume = parseFloat(parsedInput[1].toString())
+            }
+            else if(parsedInput[0].toString() === " coins"){
+                parsedData.coins = parseInt(parsedInput[1].toString())
+            }
+            else if(parsedInput[0].toString() === " level"){
+                parsedData.level = parseInt(parsedInput[1].toString())
+            }
+            else if(parsedInput[0].toString() === " ships"){
+                parsedData.ships = parsedInput[1].split`,`.map(x=>+x); // this converts an array of strings to an array of ints
+            }
+        })
+        //console.log(parsedData)
+        return parsedData;
+    }
+
+    flushCookie(dataS,days=30) {
+        let d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000)); // Cookies expiring days
+        let expireDay = "expires="+d.toUTCString();
+        Object.keys(dataS).forEach(element => {
+            //console.log(element + "=" + dataS[element].toString()+ ";" + expireDay);
+            document.cookie = element + "=" + dataS[element].toString() + ";" + expireDay;
+            });
+        }
+
 }
