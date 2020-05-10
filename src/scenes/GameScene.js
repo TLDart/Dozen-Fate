@@ -6,6 +6,7 @@ class GameScene extends Phaser.Scene {
         super(CONSTANTS.SCENE.INGAME.NAME);
         this.timer = 0;
         this.moveEnemyTimer = 0;
+        this.bulletRegenerationTimer = 0;
         this.weapon = [];
     }
 
@@ -20,12 +21,12 @@ class GameScene extends Phaser.Scene {
     }
     */
     preload() {
-        // Load Background
         var hero = 6;
         // Load win/esc menu
-        this.load.image(CONSTANTS.SCENE.INGAME.MENU.NAME,"assets/Sprites/UI/LevelWin.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.MENU.NAME, "assets/Sprites/UI/LevelWin.png");
         // Load Background
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.COGWHEEL.NAME, "assets/Sprites/Others/cogwheel.png")
         // Load Hero
         this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME, "assets/Sprites/Ally/heroi_" + hero + ".png");
         // Load Enemies
@@ -43,6 +44,7 @@ class GameScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[1], "assets/Sprites/Others/tiro_vermelho.png");
         this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[2], "assets/Sprites/Others/tiro_azul.png");
         this.load.image(CONSTANTS.SCENE.INGAME.BULLET.NAMES[3], "assets/Sprites/Others/tiro_verde.png");
+        this.load.image(CONSTANTS.SCENE.INGAME.BULLET.AMMO, "assets/Sprites/Others/multi.png");
         // Load Weapons
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[0], "assets/Sprites/Weapon/arma1.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.NORMAL[1], "assets/Sprites/Weapon/arma2.png");
@@ -55,17 +57,22 @@ class GameScene extends Phaser.Scene {
             frameHeight: CONSTANTS.SCENE.INGAME.HEALTHBAR.HEIGHT,
             frameWidth: CONSTANTS.SCENE.INGAME.HEALTHBAR.WIDTH
         });
-        this.load.bitmapFont(CONSTANTS.SCENE.INGAME.GAMEOVER.FONT, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt")
+        this.load.bitmapFont(CONSTANTS.SCENE.INGAME.GAMEOVER.FONT, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
+        this.load.bitmapFont(CONSTANTS.SCENE.INGAME.BULLET.FONT, "assets/Fonts/joystix/joystix_black.png", "assets/Fonts/joystix/joystix_black.fnt");
     }
 
     create() {
+        this.score = 0;
+        this.bulletCounter = CONSTANTS.SCENE.INGAME.BULLET.START;
         var startingWeapon = 1;
         // Add Background, UI and Texts
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
-        this.gameOverText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE).setOrigin().setVisible(false);
-        this.gameOverText.depth = CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH;
-        this.underText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE / 3).setOrigin().setVisible(false);
-        this.underText.depth = CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH;
+        this.cogWheel = this.add.sprite(CONSTANTS.CANVAS.WIDTH, 0, CONSTANTS.SCENE.INGAME.COGWHEEL.NAME).setScale(CONSTANTS.SCENE.INGAME.COGWHEEL.SCALE).setOrigin(1, 0).setDepth(CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH).setInteractive();
+        this.gameOverText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE).setOrigin().setDepth(CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH).setVisible(false);
+        this.underText = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.Y, CONSTANTS.SCENE.INTRO.TEXT.NAME, CONSTANTS.SCENE.INGAME.GAMEOVER.UNDER.MESSAGE, CONSTANTS.SCENE.INGAME.GAMEOVER.FONTSIZE / 3).setOrigin().setDepth(CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH).setVisible(false);
+        this.scoreText = this.add.bitmapText(0, 0, CONSTANTS.SCENE.INTRO.TEXT.NAME, "Score ", 16).setDepth(CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH);
+        this.multiBullet = this.add.image(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * 0.96, CONSTANTS.SCENE.INGAME.BULLET.AMMO).setDepth(CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH - 1);
+        this.bulletCounterText = this.add.bitmapText(this.multiBullet.x + 0.1 * this.multiBullet.width, this.multiBullet.y + 0.2 * this.multiBullet.height, CONSTANTS.SCENE.INGAME.BULLET.FONT, this.bulletCounter, 16).setOrigin().setDepth(CONSTANTS.SCENE.INGAME.GAMEOVER.DEPTH);
         // Keyboard Listeners
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -73,6 +80,8 @@ class GameScene extends Phaser.Scene {
         this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        // Mouse Listeners
+        this.cogWheel.on("pointerdown", this.quitScene, this);
         // Add Hero
         this.player = new Hero(this, startingWeapon);
         // Weapons
@@ -88,17 +97,21 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.enemies, this.heroBullets, this.bulletHitHandler, null, this);
         this.physics.add.overlap(this.player, this.enemyBullets, this.bulletHitHandler, null, this);
         this.physics.add.overlap(this.player, this.enemies, this.playerEnemyCollideHandler, null, this);
+        this.physics.add.overlap(this.enemyBullets, this.heroBullets, this.bulletsCollisionHandler, null, this);
         // Heart Structure and Animation
         this.heart = this.add.sprite(CONSTANTS.CANVAS.WIDTH * CONSTANTS.SCENE.INGAME.HEALTHBAR.XPERCENTAGE, CONSTANTS.CANVAS.HEIGHT * CONSTANTS.SCENE.INGAME.HEALTHBAR.YPERCENTAGE, CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME).setOrigin(0, 0).setScale(CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE);
-        this.heart.depth = 100;
+        this.heart.depth = CONSTANTS.SCENE.INGAME.WEAPON.DEPTH;
         this.anims.create({
             key: CONSTANTS.SCENE.INGAME.HEALTHBAR.ANIMATION,
             frameRate: 3,
             repeat: 1,
             frames: this.anims.generateFrameNumbers(CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME, {frames: [1, 0]})
         });
-        // Health Bar
-        this.healthBar = new HealthBar(this, this.heart.x, this.heart.y, this.player.lifePoints);
+        // Bars
+        this.healthBar = new Bar(this, this.heart.x, this.heart.y);
+        this.reloadBar = new Bar(this, this.multiBullet.getTopLeft().x, this.multiBullet.getTopLeft().y + 0.7 * this.multiBullet.height, this.multiBullet.width, 5, 1);
+        this.reloadBar.setOrigin(0.47,0.5);
+        console.log(this.multiBullet)
         // Update Function Control Vars
         this.playing = true;
         this.stopped = true;
@@ -111,6 +124,7 @@ class GameScene extends Phaser.Scene {
             // Increments
             this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
             this.moveEnemyTimer += 16;
+            this.bulletRegenerationTimer += 16;
             this.background.tilePositionY -= 0.2;
             // Spawner
             if (this.timer > CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED) {
@@ -128,12 +142,17 @@ class GameScene extends Phaser.Scene {
                 this.moveEnemyTimer = 0;
                 this.enemiesActionHandler();
             }
+            // To regenerate bullets
+            if (this.bulletRegenerationTimer > CONSTANTS.SCENE.INGAME.BULLET.RENEG) {
+                this.bulletRegenerationTimer = 0;
+                this.bulletCounter += CONSTANTS.SCENE.INGAME.BULLET.AMOUNT;
+            }
             // To move Player
             this.movePlayerHandler();
             // To shoot/switch weapon
             this.weaponHandler();
-            // To Handle the life bar
-            this.healthBarHandler();
+            // To Handle the bars
+            this.barsHandler();
             // To update game objects on canvas
             this.renderer();
             /* Debug */
@@ -145,9 +164,12 @@ class GameScene extends Phaser.Scene {
             this.renderer();
             this.player.stop();
             this.spaceTimer = 0;
+            console.log("gameover");
             this.gameOverText.setVisible(true);
+            this.healthBar.setPercentage(0);
+            this.reloadBar.setPercentage(0);
             this.stopped = false;
-        } else if(!this.transitionInProgress){
+        } else if (!this.transitionInProgress) {
             this.heart.setFrame(1); // broken heart
             this.spaceTimer += 16; // so every real 16ms, we increment timer += 16 (ms)
             if (this.spaceTimer > CONSTANTS.SCENE.INGAME.GAMEOVER.TIMER) {
@@ -156,6 +178,7 @@ class GameScene extends Phaser.Scene {
             }
             if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
                 this.transitionInProgress = true;
+                this.underText.visible = true;
                 var config = {
                     target: CONSTANTS.SCENE.MENU.NAME,
                     duration: CONSTANTS.SCENE.SPEED.TRANSITION,
@@ -191,7 +214,13 @@ class GameScene extends Phaser.Scene {
             this.swapFocus(3);
         }
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-            this.player.fire();
+            if (this.bulletCounter > 0) {
+                this.player.fire();
+                --this.bulletCounter;
+                //TODO: Add sound
+            } else {
+                //TODO: out of ammo sound
+            }
         }
     }
 
@@ -230,12 +259,9 @@ class GameScene extends Phaser.Scene {
             this.enemies.getChildren()[i].update();
         }
         if (this.stopped && Phaser.Input.Keyboard.JustDown(this.escape)) {
-            this.scene.pause();
-            this.cursorKeys.left.isDown = false;
-            this.cursorKeys.right.isDown = false;
-            this.player.stop();
-            this.scene.launch("QuitScene");
+            this.quitScene();
         }
+        this.labelsUpdater();
     }
 
     bulletHitHandler(ship, bullet) {
@@ -250,11 +276,23 @@ class GameScene extends Phaser.Scene {
         enemy.destroy();
     }
 
-    healthBarHandler() {
+    bulletsCollisionHandler(bulletA, bulletB) {
+        bulletA.destroy();
+        bulletB.destroy();
+    }
+
+
+    barsHandler() {
         if (this.player.lifePoints <= 0) {
             this.playing = false;
         }
         this.healthBar.setPercentage(this.player.lifePoints / CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
+        this.reloadBar.setPercentage(this.bulletRegenerationTimer/CONSTANTS.SCENE.INGAME.BULLET.RENEG)
+    }
+
+    labelsUpdater() {
+        this.scoreText.setText("Score " + this.score);
+        this.bulletCounterText.setText(this.bulletCounter);
     }
 
     transitionOut(progress) {
@@ -264,7 +302,10 @@ class GameScene extends Phaser.Scene {
         this.player.alpha = slow;
         this.gameOverText.alpha = slow;
         this.underText.alpha = slow;
-        this.underText.visible = true;
+        this.cogWheel.alpha = slow;
+        this.bulletCounterText.alpha = slow;
+        this.multiBullet.alpha = slow;
+        this.scoreText.alpha = slow;
         for (let i = 0; i < 3; i++) {
             this.weapon[i].alpha = slow;
         }
@@ -274,5 +315,17 @@ class GameScene extends Phaser.Scene {
         if (progress >= 0.5) {
             this.background.alpha = 1 - 4 * (progress - 0.5) ** 2;
         }
+        // TODO: add to const
+        this.gameOverText.setFontSize(50 + 100 * progress);
+        this.underText.setFontSize(50 / 3 + 100 / 3 * progress);
+    }
+
+    quitScene() {
+        this.scene.pause();
+        this.cursorKeys.left.isDown = false;
+        this.cursorKeys.right.isDown = false;
+        this.escape.isDown = false;
+        this.player.stop();
+        this.scene.launch(CONSTANTS.SCENE.QUIT.NAME, {parentScene: this});
     }
 }

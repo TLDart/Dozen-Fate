@@ -81,7 +81,6 @@ class MenuScene extends Phaser.Scene {
         this.inactiveSettings = function () {
             this.deactivate(this.settingsButton, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME);
         }
-
         this.playButton.on('pointerover', this.activePlay, this);
         this.playButton.on('pointerout', this.inactivePlay, this);
         this.playButton.on('pointerdown', this.changeplay, this);
@@ -92,8 +91,8 @@ class MenuScene extends Phaser.Scene {
         this.storeButton.on('pointerout', this.inactiveStore, this);
         this.settingsButton.on('pointerover', this.activeSettings, this);
         this.settingsButton.on('pointerout', this.inactiveSettings, this);
-        // In case transition complete fails
-        this.logo
+        //TODO In case transition complete fails
+        //this.logo
     }
 
     activate(button, texture) {

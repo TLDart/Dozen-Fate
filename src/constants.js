@@ -29,6 +29,7 @@ const CONSTANTS = {
                 loop: false,
                 delay: 0
             },
+            TEXTURE: "soundOnOff",
         },
 
         // Relative to the IntroScene
@@ -179,16 +180,16 @@ const CONSTANTS = {
             GAMEOVER: {
                 MESSAGE: "GAME OVER",
                 UNDER: {
-                    MESSAGE:"Press Space to continue",
-                    Y : 0.52,
+                    MESSAGE: "Press Space to continue",
+                    Y: 0.52,
                 },
                 FONTSIZE: 50,
                 FONT: "joystix",
                 DEPTH: 200,
                 Y: 0.45,
-                TIMER : 700,
+                TIMER: 700,
             },
-            MENU:{
+            MENU: {
                 NAME: "levelWin",
 
             },
@@ -227,11 +228,16 @@ const CONSTANTS = {
                 X: [0.74, 0.84, 0.94]
             },
             BULLET: {
+                AMMO: "ammo",
+                START: 50,
                 NAMES: ["regularBullet", "redBullet", "blueBullet", "greenBullet"],
                 SPEED: 500,             // Bullet Speed
                 DAMAGE: 2,              // Bullet Regular Damage
                 CRITICAL: 15,           // Bullet Critical Damage (same color)
-                SCALE: 0.5
+                SCALE: 0.5,
+                FONT: "joystix_black",
+                RENEG: 10000,
+                AMOUNT: 10
             },
             HEALTHBAR: {
                 NAME: "healthBar",
@@ -251,14 +257,36 @@ const CONSTANTS = {
                     WIDTH: 148,
                     HEIGHT: 26
                 }
-            }
+            },
+            COGWHEEL: {
+                NAME: "cogWheel",
+                SCALE: 0.6,
+            },
         },
         QUIT: {
             NAME: "QuitScene",
-            TEXT : {
-                FONTSIZE : 16,
-                FONT : "joystix",
+            TEXT: {
+                FONTSIZE: 16,
+                FONT: "joystix",
+                pY: 0.35,
             },
+            SHEET: {
+                YES: {
+                    NAME: "yesSheet",
+                    pX: 0.25,
+                    pY: 0.65,
+                },
+                NO: {
+                    NAME: "noSheet",
+                    pX: 0.75,
+                    pY: 0.65,
+                },
+                SOUND: {
+                    pX: 0.90,
+                    pY: 0.12,
+                    SCALE: 0.8
+                }
+            }
         },
     },
 };

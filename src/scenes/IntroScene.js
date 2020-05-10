@@ -55,7 +55,7 @@ class IntroScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.TRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
-            data : {logoVisibility:false},
+            data: {logoVisibility: false},
         };
         this.scene.transition(config);
         this.btnAudio.play();

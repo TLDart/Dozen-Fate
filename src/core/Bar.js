@@ -1,17 +1,18 @@
-class HealthBar extends Phaser.GameObjects.Rectangle {
-    constructor(scene, x, y) {
+class Bar extends Phaser.GameObjects.Rectangle {
+    constructor(scene, x, y, w = CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.WIDTH, h = CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.HEIGHT, scale = CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE) {
         var rectX = x + CONSTANTS.SCENE.INGAME.HEALTHBAR.PADDING.X * CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE;
         var rectY = y + CONSTANTS.SCENE.INGAME.HEALTHBAR.PADDING.Y * CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE;
-        super(scene, rectX, rectY, CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.WIDTH, CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.HEIGHT, CONSTANTS.SCENE.INGAME.HEALTHBAR.STARTCOLOR);
+        super(scene, rectX, rectY, w, h, CONSTANTS.SCENE.INGAME.HEALTHBAR.STARTCOLOR);
         this.setOrigin(0, 0);
-        this.setScale(CONSTANTS.SCENE.INGAME.HEALTHBAR.SCALE);
+        this.setScale(scale);
         this.depth = CONSTANTS.SCENE.INGAME.HEALTHBAR.DEPTH;
         scene.add.existing(this);
+        this.maxWidth = w;
     }
 
     setPercentage(percentage) {
-        var width = CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.WIDTH * percentage;
-        this.setSize(width <= 0 ? 0 : width, CONSTANTS.SCENE.INGAME.HEALTHBAR.RECTANGLE.HEIGHT);
+        var width = this.maxWidth * percentage;
+        this.setSize(width <= 0 ? 0 : width, this.height);
         this.fillColor = this.gradient(1 - percentage);
     }
 

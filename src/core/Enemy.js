@@ -51,6 +51,7 @@ class Enemy extends StarShip {
             this.setVelocityY(0);
         }
         if (this.lifePoints <= 0) {
+            this.scene.score += 1;
             this.destroy();
         } else if (this.y > CONSTANTS.CANVAS.HEIGHT) {
             this.scene.player.lifePoints -= CONSTANTS.SCENE.INGAME.ENEMY.DAMAGEBOTTOM;
