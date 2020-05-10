@@ -16,6 +16,7 @@ class MenuScene extends Phaser.Scene {
     init(data) {
         console.log("init menuscene");
         console.log(data);
+        this.cookies = data;
     }
 
     preload() {
@@ -49,8 +50,12 @@ class MenuScene extends Phaser.Scene {
         this.settingsButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 4, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME).setInteractive();
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
         // Listeners
-        music = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
-        //music.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
+        if(CONSTANTS.MUSIC.REF === undefined){
+            CONSTANTS.MUSIC.REF = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
+            CONSTANTS.MUSIC.REF.setVolume(this.cookies["volume"]);
+            CONSTANTS.MUSIC.REF.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
+        }
+
         this.changeplay = function () {
             this.changelevel(CONSTANTS.SCENE.MENUPLAY.NAME)
         }
@@ -59,6 +64,9 @@ class MenuScene extends Phaser.Scene {
         }
         this.changestore= function () {
             this.changelevel(CONSTANTS.SCENE.STORE.NAME)
+        }
+        this.changesettings= function () {
+            this.changelevel(CONSTANTS.SCENE.SETTINGS.NAME)
         }
         this.activePlay = function () {
             this.activate(this.playButton, CONSTANTS.SCENE.MENU.BUTTON.PLAYSELECTED.NAME);
@@ -96,6 +104,7 @@ class MenuScene extends Phaser.Scene {
         this.storeButton.on('pointerdown', this.changestore, this);
         this.settingsButton.on('pointerover', this.activeSettings, this);
         this.settingsButton.on('pointerout', this.inactiveSettings, this);
+        this.settingsButton.on('pointerdown', this.changesettings, this);
         // In case transition complete fails
         this.logo
     }
@@ -115,6 +124,7 @@ class MenuScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
             onUpdate: this.transitionOut,
+            data: this.cookies
         };
         this.scene.transition(config);
     }

@@ -8,6 +8,9 @@ const CONSTANTS = {
         WIDTH: 500,
         HEIGHT: 600
     },
+    MUSIC:{
+        REF: undefined,
+    },
     //Relative to the Scenes
     SCENE: {
         SPEED: {
@@ -51,6 +54,7 @@ const CONSTANTS = {
             },
             BACKGROUND_MUSIC: {
                 NAME: "backGroundMusic",
+                VAR: "",
                 CONFIG: {
                     mute: false,
                     volume: 0.3,
@@ -99,7 +103,6 @@ const CONSTANTS = {
                 NAME: "backGroundMusic2",
                 CONFIG: {
                     mute: false,
-                    volume: 0.5,
                     detune: 0,
                     seek: 0,
                     loop: true,
@@ -222,6 +225,22 @@ const CONSTANTS = {
                     NAME: "coin",
                     SCALE: 0.5
                 }
+            }
+        },
+        SETTINGS:{
+            NAME : "SettingsScene",
+            SLIDERWIDTH : 200,
+            BUTTON: {
+                SPACING: 90,
+                BACK: {
+                    NAME: "Settings_backbtn",
+                    NAMESELECTED: "Settings_backbtnSelected",
+                    PADDING: 10,
+                    BTNSIZE: 64
+                },
+            },
+            TEXT:{
+                MESSAGE: "volume"
             }
         },
         INGAME: {
