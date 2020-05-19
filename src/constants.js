@@ -190,9 +190,11 @@ const CONSTANTS = {
             ROWS: 2,
             COLS: 3,
             ITEMS: 2* 3,
+            COINSIZE: 15,
             TEXT:{
                 MESSAGE: "BACK TO MENU",
                 NAME: "btmstore",
+                NAMEBLACK: "btmstoreblack",
                 FONTSIZE: 8,
             },
             CODES:{

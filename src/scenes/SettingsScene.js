@@ -9,10 +9,8 @@ class SettingsScene extends Phaser.Scene {
     init(data){
         this.cookies = data; // TODO: fix this
         console.log(this.cookies)
-
     }
     preload() {
-        this.ok = true;
         for(let i = 0; i < this.cookies["ships"].length; i++){
             if(this.cookies["ships"][i] === CONSTANTS.SCENE.STORE.CODES.USING) // FInd the ship that the player is using
                 var index = i;
@@ -94,7 +92,6 @@ class SettingsScene extends Phaser.Scene {
 
 
     update() {
-
             if (this.cursorKeys.left.isDown) {
                 this.img.slider.value -= 0.01;
             } else if (this.cursorKeys.right.isDown) {

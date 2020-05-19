@@ -12,6 +12,10 @@ class StoreScene extends Phaser.Scene {
         super(CONSTANTS.SCENE.STORE.NAME); // DO NOT FORGET TO ADD SCENE TO MAIN
     }
 
+    init(data){
+        this.cookies = data;
+    }
+
     preload() {
         this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
@@ -29,6 +33,7 @@ class StoreScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.STORE.BUTTONS.NAMESSELECTED[1], "assets/Sprites/UI/boughtSelected.png");
         this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
         this.load.bitmapFont(CONSTANTS.SCENE.STORE.TEXT.NAME, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
+        this.load.bitmapFont(CONSTANTS.SCENE.STORE.TEXT.NAMEBLACK, "assets/Fonts/joystix/joystix_black.png", "assets/Fonts/joystix/joystix_white.fnt");
 
         //Ships
         for(let i = 0; i < CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER; i++){
@@ -52,7 +57,7 @@ class StoreScene extends Phaser.Scene {
 
 
         //Coins on the top left
-        this.coinage = this.add.text(CONSTANTS.SCENE.STORE.BUTTONS.PADDING * 3, CONSTANTS.SCENE.STORE.BUTTONS.PADDING, coins).setOrigin(0.5,0.5);
+        this.coinage = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.PADDING * 3, CONSTANTS.SCENE.STORE.BUTTONS.PADDING,CONSTANTS.SCENE.STORE.TEXT.NAME, coins, CONSTANTS.SCENE.STORE.COINSIZE).setOrigin(0.5,0.5);
         this.coin = this.add.sprite(CONSTANTS.SCENE.STORE.BUTTONS.PADDING, CONSTANTS.SCENE.STORE.BUTTONS.PADDING, CONSTANTS.SCENE.STORE.BUTTONS.COIN.NAME).setScale(CONSTANTS.SCENE.STORE.BUTTONS.COIN.SCALE);
 
         //Main Menus
@@ -119,6 +124,7 @@ class StoreScene extends Phaser.Scene {
             target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
+            data: {logoVisibility : true , cookies : this.cookies}
         };
         this.scene.transition(config);
     }
@@ -178,8 +184,8 @@ class StoreScene extends Phaser.Scene {
                 });
                 //Text
                 if(data[pagePos] === 0){
-                    this.text[arrayPos] = this.add.text(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(2 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.STORE.SPRITES.COST[pagePos]).setOrigin(0.5,0.5);
-                    this.text[arrayPos].setColor("#000000");
+                    this.text[arrayPos] = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(2 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.STORE.TEXT.NAMEBLACK,CONSTANTS.SCENE.STORE.SPRITES.COST[pagePos], CONSTANTS.SCENE.STORE.COINSIZE).setOrigin(0.5,0.5);
+                    //this.text[arrayPos].style.fill = "#000000";
                     this.text[arrayPos].key = i*j +j;
                 }
                 //Sprites
