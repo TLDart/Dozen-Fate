@@ -11,7 +11,7 @@ class LevelsScene extends Phaser.Scene{
     leftMid;
     rightOut;
     rightMid;
-    maxPages = 1;
+    maxPages = CONSTANTS.SCENE.LEVELS.MAXPAGES;
     constructor() {
         super(CONSTANTS.SCENE.LEVELS.NAME); // DO NOT FORGET TO ADD SCENE TO MAIN
     }
@@ -67,6 +67,8 @@ class LevelsScene extends Phaser.Scene{
         this.leftMid = false ;
         this.rightMid = false ;
         this.rightOut = false ;
+
+
         //auxiliary functions
         this.activeButton1 = function () {this.activate(this.button1, this.button1.key);}
         this.inactivateButton1= function (){this.deactivate(this.button1, this.button1.key);}
