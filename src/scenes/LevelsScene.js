@@ -1,143 +1,97 @@
-class LevelsScene extends Phaser.Scene{
-    button1;
-    button2;
-    button3;
-    button4;
-    next;
-    back;
-    pageNr;
-    changePage;
-    leftOut;
-    leftMid;
-    rightOut;
-    rightMid;
-    maxPages = CONSTANTS.SCENE.LEVELS.MAXPAGES;
+class LevelsScene extends Phaser.Scene {
+    logo;
+    background;
+    test;
+    buttons = new Array(CONSTANTS.SCENE.LEVELS.COLS * CONSTANTS.SCENE.LEVELS.ROWS);
+    text = new Array(CONSTANTS.SCENE.LEVELS.COLS * CONSTANTS.SCENE.LEVELS.ROWS);
+    menuText;
+    fadedElements = [];
+    pageNr = 0;
     constructor() {
         super(CONSTANTS.SCENE.LEVELS.NAME); // DO NOT FORGET TO ADD SCENE TO MAIN
     }
+
+    init(data){
+        this.cookies = data;
+    }
+
     preload() {
-        this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
         this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
-        this.load.bitmapFont(CONSTANTS.SCENE.LEVELS.TEXT.NAME, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
-
-
         this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAME, "assets/Sprites/UI/backArrowBlue.png");
         this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAMESELECTED, "assets/Sprites/UI/backArrowPink.png");
         this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAME, "assets/Sprites/UI/farrowblue.png");
         this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAMESELECTED, "assets/Sprites/UI/farrowpink.png");
         this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAMEMAXPAGES, "assets/Sprites/UI/farrowgrey.png");
 
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[1], "assets/Sprites/UI/b1blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[1], "assets/Sprites/UI/b1pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[2], "assets/Sprites/UI/b2blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[2], "assets/Sprites/UI/b2pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[3], "assets/Sprites/UI/b3blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[3], "assets/Sprites/UI/b3pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[4], "assets/Sprites/UI/b4blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[4], "assets/Sprites/UI/b4pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[5], "assets/Sprites/UI/b5blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[5], "assets/Sprites/UI/b5pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[6], "assets/Sprites/UI/b6blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[6], "assets/Sprites/UI/b6pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[7], "assets/Sprites/UI/b7blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[7], "assets/Sprites/UI/b7pink.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[8], "assets/Sprites/UI/b8blue.png");
-        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[8], "assets/Sprites/UI/b8pink.png");
+        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAME, "assets/Sprites/UI/buttonNormal.png");
+        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESELECTED, "assets/Sprites/UI/buttonSelected.png");
+        this.load.image(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMEDISABLED, "assets/Sprites/UI/buttonDeselect.png")
+
+
+        this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
+        this.load.bitmapFont(CONSTANTS.SCENE.LEVELS.TEXT.NAMEPINK, "assets/Fonts/joystix/joystix_pink.png", "assets/Fonts/joystix/joystix_black.fnt");
+        this.load.bitmapFont(CONSTANTS.SCENE.LEVELS.TEXT.NAMEBLACK, "assets/Fonts/joystix/joystix_black.png", "assets/Fonts/joystix/joystix_pink.fnt");
+        this.load.bitmapFont(CONSTANTS.SCENE.LEVELS.TEXT.NAMEWHITE, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
     }
 
-        create(){
+    create() {
+        //Logo and Background
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
-        this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.LEVELS.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LEVELS.LOGO.SCALING);
+        this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
+        // Next and prev buttons
+        this.back = this.add.sprite(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING + CONSTANTS.SCENE.LEVELS.SPRITESIZE / 2, CONSTANTS.CANVAS.HEIGHT - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING - CONSTANTS.SCENE.LEVELS.SPRITESIZE / 2, CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAME).setInteractive();
+        this.next = this.add.sprite(CONSTANTS.CANVAS.WIDTH -CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.CANVAS.HEIGHT - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAME).setInteractive();
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
-        this.text = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE + CONSTANTS.SCENE.LEVELS.BUTTONS.SPACING * 3, CONSTANTS.SCENE.LEVELS.TEXT.NAME, CONSTANTS.SCENE.LEVELS.TEXT.MESSAGE, CONSTANTS.SCENE.LEVELS.TEXT.FONTSIZE).setOrigin();
-        this.text.setVisible(false);
-        this.button1 = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2 , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE, CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[1]).setInteractive();
-        this.button1.key = 1;
-        this.button3 = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2 , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE, CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[3]).setInteractive();
-        this.button3.key = 3;
-        this.button2 = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2 , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE + CONSTANTS.SCENE.LEVELS.BUTTONS.SPACING, CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[2]).setInteractive();
-        this.button2.key = 2;
-        this.button4 = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2 , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE + CONSTANTS.SCENE.LEVELS.BUTTONS.SPACING, CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[4]).setInteractive();
-        this.button4.key = 4;
-        this.back = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2 , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE + CONSTANTS.SCENE.LEVELS.BUTTONS.SPACING * 2 , CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAME).setInteractive();
-        this.next = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2 , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.LEVELS.BUTTONS.TOPSPACE + CONSTANTS.SCENE.LEVELS.BUTTONS.SPACING * 2 , CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAME).setInteractive();
-        this.pageNr = 0;
-        this.leftOut = false ;
-        this.leftMid = false ;
-        this.rightMid = false ;
-        this.rightOut = false ;
 
+        // back to Menu Text
+        this.menuText = this.add.bitmapText(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING + CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.CANVAS.HEIGHT - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE - 15,CONSTANTS.SCENE.LEVELS.TEXT.NAMEWHITE ,CONSTANTS.SCENE.LEVELS.TEXT.MESSAGE, CONSTANTS.SCENE.LEVELS.TEXT.FONTSIZE).setOrigin().setVisible(false);
 
-        //auxiliary functions
-        this.activeButton1 = function () {this.activate(this.button1, this.button1.key);}
-        this.inactivateButton1= function (){this.deactivate(this.button1, this.button1.key);}
-        this.activeButton3 = function () {this.activate(this.button3, this.button3.key);}
-        this.inactivateButton3 = function (){this.deactivate(this.button3, this.button3.key);}
-        this.activeButton2 = function () {this.activate(this.button2, this.button2.key);}
-        this.inactivateButton2= function (){this.deactivate(this.button2, this.button2.key);}
-        this.activeButton4 = function () {this.activate(this.button4, this.button4.key);}
-        this.inactivateButton4 = function (){this.deactivate(this.button4, this.button4.key);}
+        //Coins on the top left
+
+        //Main Menus
+        this.makePage(this.cookies.ships, this.cookies.coins);
+        //Auxiliary functions
         this.activenext = function () {
-            if(this.pageNr === this.maxPages){
-                this.activate(this.next, 0,CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAMEMAXPAGES);
+            if(this.pageNr === CONSTANTS.SCENE.LEVELS.MAXPAGES){
+                this.next.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAMEMAXPAGES)
+                this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
             }
             else
-                this.activate(this.next, 0,CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAMESELECTED);
+                this.next.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAMESELECTED)
+                this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
         }
-        this.inactivatenext = function (){this.deactivate(this.next, 0,CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAME);}
+        this.inactivatenext = function (){this.next.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NEXT.NAME);}
         this.activeback = function () {
             if(this.pageNr === 0)
-                this.text.setVisible(true);
-            this.activate(this.back, 0,CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAMESELECTED);}
+                this.menuText.setVisible(true);
+            this.back.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAMESELECTED);
+        }
 
-        this.inactivateback = function (){this.deactivate(this.back, 0,CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAME);this.text.setVisible(false)}
+        this.inactivateback = function (){this.back.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.BACK.NAME); this.menuText.setVisible(false)}
 
-
-        //listeners
-        this.button1.on('pointerover',this.activeButton1,this);
-        this.button1.on('pointerout',this.inactivateButton1,this);
-        this.button3.on('pointerover',this.activeButton3,this);
-        this.button3.on('pointerout',this.inactivateButton3,this);
-        this.button2.on('pointerover',this.activeButton2,this);
-        this.button2.on('pointerout',this.inactivateButton2,this);
-        this.button4.on('pointerover',this.activeButton4,this);
-        this.button4.on('pointerout',this.inactivateButton4,this);
+        // Listeners
         this.back.on('pointerover',this.activeback,this);
         this.back.on('pointerout',this.inactivateback,this);
         this.next.on('pointerover',this.activenext,this);
         this.next.on('pointerout',this.inactivatenext,this);
-
         this.back.on('pointerdown',this.handleback,this);
         this.next.on('pointerdown',this.handlenext,this);
-
     }
-    activate(button, key,name){
-        if(key === 0)
-            button.setTexture(name);
-        else
-            button.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESSELECTED[key]);
-        this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
-    }
-    deactivate(button, key,name){
-        if(key === 0)
-            button.setTexture(name);
-        else
-            button.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[key]);
-    }
-
     handleback(){
-        console.log("testfdsas");
         if(this.pageNr === 0)
-            this.changelevel(CONSTANTS.SCENE.MENUPLAY.NAME)
+            this.changelevel(CONSTANTS.SCENE.MENU.NAME)
         else{
-            this.rightOut = true;
-            console.log("Handle back");
+            this.pageNr--;
+            this.fadeOut.play();
+            //animate
         }
     }
     handlenext(){
-        if(this.pageNr !== this.maxPages)
-            this.leftOut = true;
+        if(this.pageNr !== CONSTANTS.SCENE.STORE.MAXPAGES){
+            this.pageNr++;
+            this.fadeOut.play();
+        }
     }
 
     changelevel(levelName) {
@@ -145,91 +99,87 @@ class LevelsScene extends Phaser.Scene{
             target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
+            data: {logoVisibility : true , cookies : this.cookies}
         };
         this.scene.transition(config);
     }
 
-
-    update(){
+    update() {
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
-        //console.log(this.leftOut, this.leftMid, this.rightOut, this.rightMid)
-        if(this.leftOut){
-            if (this.next.x + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 > 0) {
-                this.move(-CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED);
-                if (this.next.x + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED < 0) {
-                    this.leftOut = false
-                    this.loadPage(1)
-                }
-            }
-        }
-        else if(this.rightMid){
-            if (this.next.x  > CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2) {
-                this.move(-CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED);
-                if (this.next.x - CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED < CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2) {
-                    this.rightMid = false;
-                }
-            }
-        }
-        else if(this.rightOut){
-            if (this.back.x - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 < CONSTANTS.CANVAS.WIDTH) {
-                this.move(CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED);
-                if (this.back.x - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2  + CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED > CONSTANTS.CANVAS.WIDTH) {
-                    this.rightOut = false;
-                    this.loadPage(-1)
-                }
-            }
-        }
-        else if(this.leftMid){
-            if (this.next.x  < CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2) {
-                this.move(CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED);
-                if (this.next.x  - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE + CONSTANTS.SCENE.LEVELS.CHANGEPAGESPEED > CONSTANTS.CANVAS.WIDTH / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2) {
-                    this.leftMid = false;
-                }
-            }
-        }
     }
 
-    move(amount){
-        this.button1.x += amount;
-        this.button2.x += amount;
-        this.button3.x += amount;
-        this.button4.x += amount;
-        this.next.x += amount;
-        this.back.x += amount;
+    makePage(){
+        console.log("max level -> ", this.cookies.level)
+        console.log(this.cookies)
+        for(let i = 0; i < CONSTANTS.SCENE.STORE.ROWS; i++){
+            for(let j = 0; j < CONSTANTS.SCENE.STORE.COLS; j++){
+                let arrayPos = i*(CONSTANTS.SCENE.STORE.COLS) +j;
+                let pagePos = this.pageNr * (CONSTANTS.SCENE.STORE.COLS * CONSTANTS.SCENE.STORE.ROWS) + i*(CONSTANTS.SCENE.STORE.COLS) +j;
+                //Buttons
+                if( pagePos< this.cookies.level){
+                this.buttons[arrayPos] = this.add.sprite(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(1 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.LEVELS.BUTTONS.NAME).setInteractive();
+                //this.buttons[arrayPos] = this.add.sprite(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(2 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.LEVELS.BUTTONS.NAME).setInteractive();
+                this.buttons[arrayPos].key = pagePos;
+                console.log(this.buttons[arrayPos].key);
+                this.buttons[arrayPos].on('pointerover',() =>{
+                    //console.log(data[this.buttons[i*(CONSTANTS.SCENE.STORE.COLS + 1) +j].key], this.buttons[i*(CONSTANTS.SCENE.STORE.COLS + 1) +j].key)
+                    this.buttons[arrayPos].setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMESELECTED)
+                    this.text[arrayPos].destroy();
+                    this.text[arrayPos] = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(1 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.LEVELS.TEXT.NAMEPINK,pagePos + 1, CONSTANTS.SCENE.LEVELS.BUTTONS.TEXTSIZE).setOrigin(0.5,0.5);
+                    this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)
+                    this.createTween()
+                });
+                this.buttons[arrayPos].on('pointerout', () =>{
+                    this.buttons[arrayPos].setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAME);
+                    this.text[arrayPos].destroy()
+                    this.text[arrayPos] = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(1 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.LEVELS.TEXT.NAMEBLACK,pagePos + 1, CONSTANTS.SCENE.LEVELS.BUTTONS.TEXTSIZE).setOrigin(0.5,0.5);
+                    this.createTween()
+                });
+                this.buttons[arrayPos].on('pointerdown', () =>{// Launch a new level on pointer down
+                    var config = {
+                        target: CONSTANTS.SCENE.INGAME.NAME,
+                        duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
+                        moveBelow: true,
+                        data: {difficulty : this.buttons[arrayPos].key , cookies : this.cookies}
+                    };
+                    this.scene.transition(config);
+                });
+                //Text
+                this.text[arrayPos] = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(1 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.LEVELS.TEXT.NAMEBLACK,pagePos + 1, CONSTANTS.SCENE.LEVELS.BUTTONS.TEXTSIZE).setOrigin(0.5,0.5);
+                }
+                else{
+                    this.buttons[arrayPos] = this.add.sprite(CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH / 2 + CONSTANTS.SCENE.STORE.BUTTONS.BTNWIDTH * j  + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (j + 1) , CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.STORE.SPRITESIZE *(1 + i) + CONSTANTS.SCENE.STORE.BUTTONS.PADDING * (2 + 4 *i), CONSTANTS.SCENE.LEVELS.BUTTONS.NAMEDISABLED);
+                }
+            }
+        }
+        this.createTween()
     }
+    createTween(){
+        this.fadedElements = [];
+        this.fadedElements.push.apply(this.fadedElements, this.buttons);
+        this.fadedElements.push.apply(this.fadedElements, this.text);
+        this.fadeIn = this.tweens.add({
+            targets: this.fadedElements,
+            alpha: { from: 0, to: 1 },
+            ease: 'Cubic',// 'Cubic', 'Elastic', 'Bounce', 'Back'
+            paused: true,
+            duration: 500,
+            repeat: 0,            // -1: infinity
+            yoyo: false
 
-    loadPage(amount){
-        this.changePage = false;
-        this.pageNr += amount;
-
-        this.button1.key = this.pageNr * 4 + 1;
-        this.button2.key = this.pageNr * 4 + 2;
-        this.button3.key = this.pageNr * 4 + 3;
-        this.button4.key = this.pageNr * 4 + 4;
-
-        this.button1.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[this.button1.key])
-        this.button2.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[this.button2.key])
-        this.button3.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[this.button3.key])
-        this.button4.setTexture(CONSTANTS.SCENE.LEVELS.BUTTONS.NAMES[this.button4.key])
-
-        if(amount > 0){
-            this.button1.x = CONSTANTS.CANVAS.WIDTH  - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.button3.x = CONSTANTS.CANVAS.WIDTH  + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.button2.x = CONSTANTS.CANVAS.WIDTH - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.button4.x = CONSTANTS.CANVAS.WIDTH  + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.next.x = CONSTANTS.CANVAS.WIDTH + CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.back.x = CONSTANTS.CANVAS.WIDTH - CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.rightMid = true;
-        }
-
-        else{
-            this.button1.x =  -CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.button3.x = CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.button2.x =  -CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.button4.x = CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.next.x = CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 + CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.back.x = -CONSTANTS.SCENE.LEVELS.BUTTONS.BTNSIZE / 2 - CONSTANTS.SCENE.LEVELS.BUTTONS.PADDING /2;
-            this.leftMid = true;
-        }
+        });
+        this.fadeOut = this.tweens.add({
+            targets: this.fadedElements,
+            alpha: { from: 1, to: 0 },
+            ease: 'Cubic',
+            paused: true,// 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 500,
+            repeat: 0,            // -1: infinity
+            yoyo: false,
+            onComplete: () =>{
+                console.log("here");
+                this.makePage(this.cookies.ships);
+            }
+        });
     }
 }

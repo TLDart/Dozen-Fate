@@ -7,14 +7,10 @@ class SettingsScene extends Phaser.Scene {
     }
 
     init(data){
-        this.cookies = data; // TODO: fix this
-        console.log(this.cookies)
+        this.cookies = data;
     }
+
     preload() {
-        for(let i = 0; i < this.cookies["ships"].length; i++){
-            if(this.cookies["ships"][i] === CONSTANTS.SCENE.STORE.CODES.USING) // FInd the ship that the player is using
-                var index = i;
-        }
         this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         this.load.image(CONSTANTS.SCENE.SETTINGS.BUTTON.BACK.NAME, "assets/Sprites/UI/backArrowBlue.png");
@@ -26,7 +22,7 @@ class SettingsScene extends Phaser.Scene {
 
         url = 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/white-dot.png';
         this.load.image('dot', url);
-        this.load.image("shipS",`assets/Sprites/Ally/heroi_${index + 1}.png`);
+        this.load.image("shipS",`assets/Sprites/Ally/heroi_${1}.png`);
     }
 
     create() {
@@ -85,7 +81,7 @@ class SettingsScene extends Phaser.Scene {
             target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
-            data: this.cookies
+            data: {logoVisibility: true, cookies :this.cookies}
         };
         this.scene.transition(config);
     }

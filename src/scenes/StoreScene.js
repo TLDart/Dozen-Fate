@@ -33,7 +33,7 @@ class StoreScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.STORE.BUTTONS.NAMESSELECTED[1], "assets/Sprites/UI/boughtSelected.png");
         this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
         this.load.bitmapFont(CONSTANTS.SCENE.STORE.TEXT.NAME, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
-        this.load.bitmapFont(CONSTANTS.SCENE.STORE.TEXT.NAMEBLACK, "assets/Fonts/joystix/joystix_black.png", "assets/Fonts/joystix/joystix_white.fnt");
+        this.load.bitmapFont(CONSTANTS.SCENE.STORE.TEXT.NAMEBLACK, "assets/Fonts/joystix/joystix_black.png", "assets/Fonts/joystix/joystix_black.fnt");
 
         //Ships
         for(let i = 0; i < CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER; i++){
@@ -42,8 +42,6 @@ class StoreScene extends Phaser.Scene {
     }
 
     create() {
-        let data = [2,0,0,1,0,1,0,0,1,1,0,0];
-        let coins = 10000;
         //Logo and Background
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
@@ -57,11 +55,11 @@ class StoreScene extends Phaser.Scene {
 
 
         //Coins on the top left
-        this.coinage = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.PADDING * 3, CONSTANTS.SCENE.STORE.BUTTONS.PADDING,CONSTANTS.SCENE.STORE.TEXT.NAME, coins, CONSTANTS.SCENE.STORE.COINSIZE).setOrigin(0.5,0.5);
+        this.coinage = this.add.bitmapText(CONSTANTS.SCENE.STORE.BUTTONS.PADDING * 3, CONSTANTS.SCENE.STORE.BUTTONS.PADDING,CONSTANTS.SCENE.STORE.TEXT.NAME, this.cookies.coins, CONSTANTS.SCENE.STORE.COINSIZE).setOrigin(0.5,0.5);
         this.coin = this.add.sprite(CONSTANTS.SCENE.STORE.BUTTONS.PADDING, CONSTANTS.SCENE.STORE.BUTTONS.PADDING, CONSTANTS.SCENE.STORE.BUTTONS.COIN.NAME).setScale(CONSTANTS.SCENE.STORE.BUTTONS.COIN.SCALE);
 
         //Main Menus
-        this.makePage(data, coins);
+        this.makePage(this.cookies.ships, this.cookies.coins);
         //Auxiliary functions
         this.activenext = function () {
             if(this.pageNr === CONSTANTS.SCENE.STORE.MAXPAGES){
@@ -119,7 +117,6 @@ class StoreScene extends Phaser.Scene {
     }
 
     changelevel(levelName) {
-        CONSTANTS.GENERAL.COINS++;
         var config = {
             target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
@@ -134,7 +131,7 @@ class StoreScene extends Phaser.Scene {
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
     }
 
-    makePage(data, coins){
+    makePage(data){
         for(let i = 0; i < CONSTANTS.SCENE.STORE.ROWS; i++){
             for(let j = 0; j < CONSTANTS.SCENE.STORE.COLS; j++){
                 let arrayPos = i*(CONSTANTS.SCENE.STORE.COLS) +j;
@@ -156,13 +153,13 @@ class StoreScene extends Phaser.Scene {
                     }
                 });
                 this.buttons[arrayPos].on('pointerdown', () =>{
-                    console.log(data[this.buttons[arrayPos].key] === 0,coins >= CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key])
-                    if(data[this.buttons[arrayPos].key] === 0 && coins >= CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key]){
+                    console.log(data[this.buttons[arrayPos].key] === 0,this.cookies.coins >= CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key])
+                    if(data[this.buttons[arrayPos].key] === 0 && this.cookies.coins >= CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key]){
                         console.log(CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key]);
                         console.log(this.buttons[arrayPos].key)
-                        coins -= CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key];
-                        this.coinage.setText(coins);
-                        console.log(coins);
+                        this.cookies.coins -= CONSTANTS.SCENE.STORE.SPRITES.COST[this.buttons[arrayPos].key];
+                        this.coinage.setText(this.cookies.coins);
+                        console.log(this.cookies.coins);
                         data[this.buttons[arrayPos].key] = 1;
                         this.text[this.buttons[arrayPos].key % CONSTANTS.SCENE.STORE.ITEMS].setVisible(false);
                         this.buttons[arrayPos].setTexture(CONSTANTS.SCENE.STORE.BUTTONS.NAMESSELECTED[data[this.buttons[arrayPos].key]])
@@ -203,7 +200,7 @@ class StoreScene extends Phaser.Scene {
             alpha: { from: 0, to: 1 },
             ease: 'Cubic',// 'Cubic', 'Elastic', 'Bounce', 'Back'
             paused: true,
-            duration: 1000,
+            duration: 500,
             repeat: 0,            // -1: infinity
             yoyo: false
 
@@ -213,12 +210,12 @@ class StoreScene extends Phaser.Scene {
             alpha: { from: 1, to: 0 },
             ease: 'Cubic',
             paused: true,// 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 1000,
+            duration: 500,
             repeat: 0,            // -1: infinity
             yoyo: false,
             onComplete: () =>{
                 console.log("here");
-                this.makePage(data, coins);
+                this.makePage(this.cookies.ships);
             }
         });
     }

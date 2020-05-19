@@ -77,9 +77,9 @@ class GameScene extends Phaser.Scene {
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.escape = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+        this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+        this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         // Mouse Listeners
         this.cogWheel.on("pointerdown", this.quitScene, this);
         // Add Hero

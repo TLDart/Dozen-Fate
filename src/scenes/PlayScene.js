@@ -5,6 +5,11 @@ class PlayScene extends Phaser.Scene{
     arcadeButton;
     backButton;
     btnSound;
+
+    init(data){
+        this.cookies = data;
+    }
+
     constructor() {
         super(CONSTANTS.SCENE.MENUPLAY.NAME); // DO NOT FORGET TO ADD SCENE TO MAIN
     }
@@ -30,15 +35,16 @@ class PlayScene extends Phaser.Scene{
         this.changemenu = function () {
             this.changelevel(CONSTANTS.SCENE.MENU.NAME);
         }
-        this.changelevels= function () {
+        this.changelevels = function () {
             this.changelevel(CONSTANTS.SCENE.LEVELS.NAME);
         }
 
         this.historyButton.on('pointerover', this.changehistoryon,this);
         this.historyButton.on('pointerout', this.changehistoryoff,this);
-        this.historyButton.on('pointerdown', this.changelevels, this)
+        this.historyButton.on('pointerdown', this.changelevels, this);
         this.arcadeButton.on('pointerover', this.changearcadeon,this);
         this.arcadeButton.on('pointerout', this.changearcadeoff,this);
+        this.arcadeButton.on('pointerdown', this.changeinfinitegame,this);
         this.backButton.on('pointerout', this.changebackoff,this);
         this.backButton.on('pointerover', this.changebackon,this);
         this.backButton.on('pointerdown', this.changemenu,this);
@@ -58,6 +64,16 @@ class PlayScene extends Phaser.Scene{
             target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
+            data: this.cookies
+        };
+        this.scene.transition(config);
+    }
+    changeinfinitegame() {
+        var config = {
+            target: CONSTANTS.SCENE.INGAME.NAME,
+            duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
+            moveBelow: true,
+            data: {difficulty : -1, cookies :this.cookies}
         };
         this.scene.transition(config);
     }

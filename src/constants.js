@@ -156,30 +156,35 @@ const CONSTANTS = {
             NAME: "LevelScene",
             MAXPAGES: 1,
             CHANGEPAGESPEED: 10,
-            LOGO: {
-                Y: 100,
-                SCALING: 0.5
-            },
+            SPRITESIZE: 64,
+            ROWS: 2,
+            COLS: 3,
             TEXT: {
-                NAME: "btm",
+                NAMEBLACK: "blackfont",
+                NAMEWHITE: "whitefont",
+                NAMEPINK: "pinkfont",
+                NAME: "btmenu",
                 MESSAGE: "back to menu",
-                FONTSIZE: 10
+                FONTSIZE: 7
             },
+
             BUTTONS: {
-                NAMES: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
-                NAMESSELECTED: ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s", "13s"],
+                NAME:"levelNormal",
+                NAMESELECTED:"levelSelect",
+                NAMEDISABLED:"levelDisable",
                 BTNSIZE: 64,
                 TOPSPACE: 150,
+                TEXTSIZE: 20,
                 PADDING: 10, // Padding in the middle
                 SPACING: 74, // Padding in the bottom
                 NEXT: {
-                    NAME: "next",
-                    NAMESELECTED: "nextSelected",
-                    NAMEMAXPAGES: "maxPages"
+                    NAME: "nextLevel",
+                    NAMESELECTED: "nextSelectedLevel",
+                    NAMEMAXPAGES: "maxPagesLevel"
                 },
                 BACK: {
-                    NAME: "back",
-                    NAMESELECTED: "backSelected"
+                    NAME: "backLevel",
+                    NAMESELECTED: "backSelectedLevel"
                 }
             }
         },

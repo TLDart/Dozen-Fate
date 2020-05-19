@@ -18,6 +18,7 @@ class MenuScene extends Phaser.Scene {
         this.logoStartVisible = data.logoVisibility;
         //console.log(data);
         this.cookies = data.cookies;
+        console.log(this.cookies)
     }
 
     preload() {

@@ -22,13 +22,15 @@ class IntroScene extends Phaser.Scene {
     }
 
     create() {
-        console.log("create introscene");
         let mockData = {
             volume : 0.6,
-            ships : [2,1,1,0,0,0,0,0,0,0,0,0],
-            coins: 100000,
-            level: 6
+            ships : [1,1,2,1,1,1,1,1,0,0,0,0],
+            coins: 12345,
+            level: 11,
+            highscore: 1000
         };
+
+        console.log("create introscene");
         // Add to this scene
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.INTRO.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
@@ -38,7 +40,7 @@ class IntroScene extends Phaser.Scene {
         this.btnAudio = this.sound.add(CONSTANTS.SCENE.INTRO.TEXT.SOUND);
         this.music = this.sound.add(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.NAME);
         this.music.play(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.CONFIG);
-        //this.flushCookie(mockData)
+        this.flushCookie(mockData)
         this.cookies = this.loadCookies();
         //console.log(this.cookies);
         //this.sound.pauseOnBlur = false;
@@ -86,7 +88,8 @@ class IntroScene extends Phaser.Scene {
             volume : 1,
             ships : [2].concat(new Array(CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER - 1).fill(0)),
             coins: 0,
-            level: 0
+            level: 0,
+            highscore: 0
         };
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -94,7 +97,9 @@ class IntroScene extends Phaser.Scene {
             let parsedInput = element.split("=");
            //console.log(parsedInput[0],parsedInput[1].toString());
             if(parsedInput[0].toString() === " volume"){
-                console.log("here")
+                parsedData.volume = parseFloat(parsedInput[1].toString())
+            }
+            if(parsedInput[0].toString() === " highscore"){
                 parsedData.volume = parseFloat(parsedInput[1].toString())
             }
             else if(parsedInput[0].toString() === " coins"){
