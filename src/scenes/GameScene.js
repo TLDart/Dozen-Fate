@@ -10,16 +10,20 @@ class GameScene extends Phaser.Scene {
         this.weapon = [];
     }
 
-    /*
-    init(config){
-        this.spawnSpeed = config.spawnSpeed;
-        this.maxEnemies = config.maxEnemies;
-        this.hero = config.hero;
-        this.movePercentage = config.movePercentage
-        this.shootPercentage = config.shootPercentage
-        this.moveTime = config.moveTime
+
+    init(config) {
+        this.difficulty = config.difficulty;
+        this.cookies = config.cookies;
+
+        /*
+        this.spawnSpeed = ;
+        this.maxEnemies = ;
+        this.hero = ;
+        this.movePercentage =
+        this.shootPercentage =
+        this.moveTime =*/
     }
-    */
+
     preload() {
         var hero = 6;
         // Load win/esc menu
@@ -110,7 +114,7 @@ class GameScene extends Phaser.Scene {
         // Bars
         this.healthBar = new Bar(this, this.heart.x, this.heart.y);
         this.reloadBar = new Bar(this, this.multiBullet.getTopLeft().x, this.multiBullet.getTopLeft().y + 0.7 * this.multiBullet.height, this.multiBullet.width, 5, 1);
-        this.reloadBar.setOrigin(0.47,0.5);
+        this.reloadBar.setOrigin(0.47, 0.5);
         console.log(this.multiBullet)
         // Update Function Control Vars
         this.playing = true;
@@ -184,7 +188,7 @@ class GameScene extends Phaser.Scene {
                     duration: CONSTANTS.SCENE.SPEED.TRANSITION,
                     moveBelow: true,
                     onUpdate: this.transitionOut,
-                    data: {logoVisibility: true},
+                    data: {logoVisibility: false, bugFix: false, cookies: this.cookies},
                 };
                 this.scene.transition(config);
             }
@@ -287,7 +291,7 @@ class GameScene extends Phaser.Scene {
             this.playing = false;
         }
         this.healthBar.setPercentage(this.player.lifePoints / CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
-        this.reloadBar.setPercentage(this.bulletRegenerationTimer/CONSTANTS.SCENE.INGAME.BULLET.RENEG)
+        this.reloadBar.setPercentage(this.bulletRegenerationTimer / CONSTANTS.SCENE.INGAME.BULLET.RENEG)
     }
 
     labelsUpdater() {

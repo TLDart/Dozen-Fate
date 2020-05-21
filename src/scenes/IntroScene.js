@@ -97,7 +97,9 @@ class IntroScene extends Phaser.Scene {
             let parsedInput = element.split("=");
            //console.log(parsedInput[0],parsedInput[1].toString());
             if(parsedInput[0].toString() === " volume"){
-                parsedData.volume = parseFloat(parsedInput[1].toString())
+                parsedData.volume = parseFloat(parsedInput[1].toString());
+                //TODO: REMOVE THIS FOR MUSIC
+                parsedData.volume = 0;
             }
             if(parsedInput[0].toString() === " highscore"){
                 parsedData.highscore = parseFloat(parsedInput[1].toString())

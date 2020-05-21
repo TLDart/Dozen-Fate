@@ -17,7 +17,10 @@ class MenuScene extends Phaser.Scene {
         console.log("init menuscene");
         this.logoStartVisible = data.logoVisibility;
         //console.log(data);
+        this.bugFix = data.bugFix;
         this.cookies = data.cookies;
+        this.reseted = false;
+        this.timer = 0;
         console.log(this.cookies)
     }
 
@@ -41,15 +44,15 @@ class MenuScene extends Phaser.Scene {
     create() {
         console.log("create menuscene");
         // Add to this scene
-        this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0).setVisible(this.bugFix);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE).setVisible(this.logoStartVisible);
         // Logo listener
         this.events.on("transitioncomplete", this.transitionComplete, this); // Este "this" é preciso ainda que a documentação diga que não, senão isto dá erro
         // + Add to this scene
-        this.playButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING, CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME).setInteractive();
-        this.helpButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 2, CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME).setInteractive();
-        this.storeButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 3, CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME).setInteractive();
-        this.settingsButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 4, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME).setInteractive();
+        this.playButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING, CONSTANTS.SCENE.MENU.BUTTON.PLAY.NAME).setInteractive().setVisible(this.bugFix);
+        this.helpButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 2, CONSTANTS.SCENE.MENU.BUTTON.HELP.NAME).setInteractive().setVisible(this.bugFix);
+        this.storeButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 3, CONSTANTS.SCENE.MENU.BUTTON.STORE.NAME).setInteractive().setVisible(this.bugFix);
+        this.settingsButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 4, CONSTANTS.SCENE.MENU.BUTTON.SETTINGS.NAME).setInteractive().setVisible(this.bugFix);
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
         // Listeners
         if(CONSTANTS.MUSIC.REF === undefined){
@@ -132,7 +135,6 @@ class MenuScene extends Phaser.Scene {
     }
 
     transitionOut(progress) {
-        console.log("gasdfagskfhj");
         //this.music.stop();
         if (progress >= 0.5) {
             this.background.alpha = 1 - 4 * (progress - 0.5) ** 2; //perguntem-me sobre esta formula
@@ -140,13 +142,25 @@ class MenuScene extends Phaser.Scene {
     }
 
     update() {
+        this.timer += 16;
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
+        if (this.timer > 1000 && !this.reseted){
+            this.reseted = true;
+            this.allVisible();
+        }
     }
 
     transitionComplete(ev) {
-        this.logo.visible = true;
+        this.allVisible();
     }
 
-
+    allVisible(){
+        this.logo.visible = true;
+        this.background.setVisible(true);
+        this.playButton.setVisible(true);
+        this.helpButton.setVisible(true);
+        this.storeButton.setVisible(true);
+        this.settingsButton.setVisible(true);
+    }
 
 }
