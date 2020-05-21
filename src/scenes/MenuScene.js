@@ -54,6 +54,7 @@ class MenuScene extends Phaser.Scene {
         // Listeners
         if(CONSTANTS.MUSIC.REF === undefined){
             CONSTANTS.MUSIC.REF = this.sound.add(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.NAME);
+            console.log("volume ", this.cookies["volume"] )
             CONSTANTS.MUSIC.REF.setVolume(this.cookies["volume"]);
             CONSTANTS.MUSIC.REF.play(CONSTANTS.SCENE.MENU.BACKGROUND_MUSIC.CONFIG);
         }

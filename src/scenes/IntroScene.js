@@ -85,7 +85,7 @@ class IntroScene extends Phaser.Scene {
 
     loadCookies() {
         let parsedData = {
-            volume : 1,
+            volume : 0.6,
             ships : [2].concat(new Array(CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER - 1).fill(0)),
             coins: 0,
             level: 0,
@@ -100,7 +100,7 @@ class IntroScene extends Phaser.Scene {
                 parsedData.volume = parseFloat(parsedInput[1].toString())
             }
             if(parsedInput[0].toString() === " highscore"){
-                parsedData.volume = parseFloat(parsedInput[1].toString())
+                parsedData.highscore = parseFloat(parsedInput[1].toString())
             }
             else if(parsedInput[0].toString() === " coins"){
                 parsedData.coins = parseInt(parsedInput[1].toString())
@@ -112,7 +112,7 @@ class IntroScene extends Phaser.Scene {
                 parsedData.ships = parsedInput[1].split`,`.map(x=>+x); // this converts an array of strings to an array of ints
             }
         })
-        //console.log(parsedData)
+        console.log( "in intro", parsedData)
         return parsedData;
     }
 
