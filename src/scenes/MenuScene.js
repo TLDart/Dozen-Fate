@@ -110,8 +110,6 @@ class MenuScene extends Phaser.Scene {
         this.settingsButton.on('pointerover', this.activeSettings, this);
         this.settingsButton.on('pointerout', this.inactiveSettings, this);
         this.settingsButton.on('pointerdown', this.changesettings, this);
-        // In case transition complete fails
-        this.logo
     }
 
     activate(button, texture) {
@@ -144,7 +142,7 @@ class MenuScene extends Phaser.Scene {
     update() {
         this.timer += 16;
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
-        if (this.timer > 1000 && !this.reseted){
+        if (this.timer > CONSTANTS.SCENE.SPEED.TRANSITION && !this.reseted){
             this.reseted = true;
             this.allVisible();
         }

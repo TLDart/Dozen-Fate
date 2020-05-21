@@ -270,7 +270,7 @@ const CONSTANTS = {
 
             },
             HERO: {
-                NAME: "hero",
+                NAME: ["trash","hero1","hero2","hero3","hero4","hero5","hero6","hero7","hero8","hero9","hero10","hero11","hero12"],
                 SPEED: 325,                 // Speed of the Hero ship
                 LIFEPOINTS: 10,              // Lifepoints of the Hero ship
                 SHIPANGLE: Math.PI / 9,     // == (20 degrees) : radians of the angle that the ship makes when moving sideways

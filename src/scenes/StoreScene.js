@@ -13,7 +13,7 @@ class StoreScene extends Phaser.Scene {
     }
 
     init(data){
-        this.cookies = data;
+         this.cookies = data;
     }
 
     preload() {

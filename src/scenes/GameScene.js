@@ -15,6 +15,8 @@ class GameScene extends Phaser.Scene {
         this.difficulty = config.difficulty;
         this.cookies = config.cookies;
 
+        this.heroNumber = this.cookies.ships.indexOf(2) + 1;
+        console.log(this.cookies.ships);
         /*
         this.spawnSpeed = ;
         this.maxEnemies = ;
@@ -25,14 +27,14 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        var hero = 6;
         // Load win/esc menu
         this.load.image(CONSTANTS.SCENE.INGAME.MENU.NAME, "assets/Sprites/UI/LevelWin.png");
         // Load Background
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
-        this.load.image(CONSTANTS.SCENE.INGAME.COGWHEEL.NAME, "assets/Sprites/Others/cogwheel.png")
+        this.load.image(CONSTANTS.SCENE.INGAME.COGWHEEL.NAME, "assets/Sprites/Others/cogwheel.png");
         // Load Hero
-        this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME, "assets/Sprites/Ally/heroi_" + hero + ".png");
+        console.log("no hero preload: " +this.heroNumber)
+        this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME[this.heroNumber], "assets/Sprites/Ally/heroi_" + this.heroNumber + ".png",true);
         // Load Enemies
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][0], "assets/Sprites/Enemy/evil_1.png");
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][1], "assets/Sprites/Enemy/evil_1_66.png");
@@ -87,7 +89,7 @@ class GameScene extends Phaser.Scene {
         // Mouse Listeners
         this.cogWheel.on("pointerdown", this.quitScene, this);
         // Add Hero
-        this.player = new Hero(this, startingWeapon);
+        this.player = new Hero(this, startingWeapon,this.heroNumber);
         // Weapons
         for (let i = 0; i < 3; i++) {
             this.weapon[i] = new Weapon(this, i + 1);

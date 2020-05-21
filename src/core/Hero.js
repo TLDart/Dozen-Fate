@@ -1,6 +1,6 @@
 class Hero extends StarShip {
-    constructor(scene, startingWeapon,lifePoints) {
-        super(scene, CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * 0.88, CONSTANTS.SCENE.INGAME.HERO.NAME, CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
+    constructor(scene, startingWeapon,heroNumber,lifePoints) {
+        super(scene, CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.CANVAS.HEIGHT * 0.88, CONSTANTS.SCENE.INGAME.HERO.NAME[heroNumber], CONSTANTS.SCENE.INGAME.HERO.LIFEPOINTS);
         this.setCollideWorldBounds(true);
         this.speed = CONSTANTS.SCENE.INGAME.HERO.SPEED;
         this.weaponID = startingWeapon;
