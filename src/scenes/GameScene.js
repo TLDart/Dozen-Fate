@@ -12,18 +12,19 @@ class GameScene extends Phaser.Scene {
 
 
     init(config) {
-        this.difficulty = config.difficulty;
+        this.difficulty = config.difficulty + 1;
         this.cookies = config.cookies;
 
         this.heroNumber = this.cookies.ships.indexOf(2) + 1;
-        console.log(this.cookies.ships);
-        /*
-        this.spawnSpeed = ;
-        this.maxEnemies = ;
-        this.hero = ;
-        this.movePercentage =
-        this.shootPercentage =
-        this.moveTime =*/
+        console.log("dif:" +this.difficulty);
+
+
+        this.spawnSpeed = CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED + 100 * (12 - this.difficulty);
+        console.log("SS: "+this.spawnSpeed)
+        this.maxEnemies = 30;
+        this.movePercentage = CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE + this.difficulty;
+        this.shootPercentage = CONSTANTS.SCENE.INGAME.ENEMY.FIREPERCENTAGE;
+        this.moveTime = CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME + this.difficulty / 2;
     }
 
     preload() {
@@ -33,8 +34,8 @@ class GameScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         this.load.image(CONSTANTS.SCENE.INGAME.COGWHEEL.NAME, "assets/Sprites/Others/cogwheel.png");
         // Load Hero
-        console.log("no hero preload: " +this.heroNumber)
-        this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME[this.heroNumber], "assets/Sprites/Ally/heroi_" + this.heroNumber + ".png",true);
+        console.log("no hero preload: " + this.heroNumber)
+        this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME[this.heroNumber], "assets/Sprites/Ally/heroi_" + this.heroNumber + ".png");
         // Load Enemies
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][0], "assets/Sprites/Enemy/evil_1.png");
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][1], "assets/Sprites/Enemy/evil_1_66.png");
@@ -89,7 +90,7 @@ class GameScene extends Phaser.Scene {
         // Mouse Listeners
         this.cogWheel.on("pointerdown", this.quitScene, this);
         // Add Hero
-        this.player = new Hero(this, startingWeapon,this.heroNumber);
+        this.player = new Hero(this, startingWeapon, this.heroNumber);
         // Weapons
         for (let i = 0; i < 3; i++) {
             this.weapon[i] = new Weapon(this, i + 1);
@@ -133,18 +134,18 @@ class GameScene extends Phaser.Scene {
             this.bulletRegenerationTimer += 16;
             this.background.tilePositionY -= 0.2;
             // Spawner
-            if (this.timer > CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED) {
+            if (this.timer > this.spawnSpeed) {
                 this.timer = 0;
                 new Enemy(this);
             }
             // To stop all enemy ships when moveTime reaches half of self
-            if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME / 2) {
+            if (this.moveEnemyTimer > this.moveTime / 2) {
                 for (let i = 0; i < this.enemies.getChildren().length; i++) {
                     this.enemies.getChildren()[i].stop();
                 }
             }
             // To move enemy ships when moveTime reaches end of self
-            if (this.moveEnemyTimer > CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME) {
+            if (this.moveEnemyTimer > this.moveTime) {
                 this.moveEnemyTimer = 0;
                 this.enemiesActionHandler();
             }
@@ -240,14 +241,14 @@ class GameScene extends Phaser.Scene {
     enemiesActionHandler() {
         for (let i = 0; i < this.enemies.getChildren().length; i++) {
             var enemy = this.enemies.getChildren()[i];
-            if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE) {
+            if (Math.random() < this.movePercentage) {
                 if (Math.random() < 0.5) {
                     enemy.moveLeft();
                 } else {
                     enemy.moveRight();
                 }
             }
-            if (Math.random() < CONSTANTS.SCENE.INGAME.ENEMY.FIREPERCENTAGE) {
+            if (Math.random() < this.shootPercentage) {
                 enemy.fire();
             }
         }

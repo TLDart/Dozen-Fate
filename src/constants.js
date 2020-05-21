@@ -283,7 +283,7 @@ const CONSTANTS = {
                 ACTIONTIME: 200,        // timer for action time of the enemy ships (move and shoot)
                 SPAWNSPEED: 1500,       // Every {SPAWNSPEED} seconds, an enemy ship is spawned
                 MOVEPERCENTAGE: 0.2,    // Every {ACTIONTIME} seconds, {MOVEPERCENTAGE} of the enemy ships move
-                FIREPERCENTAGE: 0.02,    // Every {ACTIONTIME} seconds, {FIREPERCENTAGE} of the enemy ships shoot
+                FIREPERCENTAGE: 0.04,    // Every {ACTIONTIME} seconds, {FIREPERCENTAGE} of the enemy ships shoot
                 SPEED: {
                     X: 150,
                     Y: 40,
