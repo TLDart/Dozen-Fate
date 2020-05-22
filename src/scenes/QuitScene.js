@@ -46,7 +46,7 @@ class QuitScene extends Phaser.Scene {
         this.changeYesTexture = function () {
             this.yesBtnFrame = (this.yesBtnFrame + 1) % 2;
             if (this.yesBtnFrame) {
-                this.soundPlayer.play();
+                this.soundPlayer.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
             }
             this.yesBtn.setFrame(this.yesBtnFrame);
         };
@@ -54,7 +54,7 @@ class QuitScene extends Phaser.Scene {
         this.changeNoTexture = function () {
             this.noBtnFrame = (this.noBtnFrame + 1) % 2;
             if (this.noBtnFrame) {
-                this.soundPlayer.play();
+                this.soundPlayer.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
             }
             this.noBtn.setFrame(this.noBtnFrame);
         };

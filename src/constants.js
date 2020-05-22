@@ -137,6 +137,7 @@ const CONSTANTS = {
         },
         HELP: {
             NAME: "HelpScene",
+            TEXTIMG: "txtImg",
             SPACING: 90,
             LOGO: {
                 Y: 100,

@@ -13,6 +13,7 @@ class HelpScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAME, "assets/Sprites/UI/backArrowBlue.png");
         this.load.image(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAMESELECTED, "assets/Sprites/UI/backArrowPink.png");
         this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
+        this.load.image(CONSTANTS.SCENE.HELP.TEXTIMG, "assets/Sprites/Others/helptext.png");
     }
 
     create() {
@@ -20,7 +21,7 @@ class HelpScene extends Phaser.Scene {
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
         this.backButton = this.add.sprite(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING + CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.CANVAS.HEIGHT - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAME).setInteractive();
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
-
+        this.txt = this.add.sprite(0, CONSTANTS.SCENE.MENU.LOGO.Y + 64, CONSTANTS.SCENE.HELP.TEXTIMG).setOrigin(0,0);
         this.changemenu = function () {
             this.changelevel(CONSTANTS.SCENE.MENU.NAME)
         }
