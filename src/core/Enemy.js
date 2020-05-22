@@ -51,6 +51,9 @@ class Enemy extends StarShip {
             this.setVelocityY(0);
         }
         if (this.lifePoints <= 0) {
+            if(!this.scene.arcadeMode){
+                this.scene.maxEnemies -= 1;
+            }
             this.scene.score += 1;
             this.destroy();
         } else if (this.y > CONSTANTS.CANVAS.HEIGHT) {

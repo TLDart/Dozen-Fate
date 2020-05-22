@@ -4,25 +4,25 @@ class GameScene extends Phaser.Scene {
 
     constructor() {
         super(CONSTANTS.SCENE.INGAME.NAME);
+    }
+
+    init(config) {
         this.timer = 0;
         this.moveEnemyTimer = 0;
         this.bulletRegenerationTimer = 0;
         this.weapon = [];
-    }
-
-
-    init(config) {
+        this.arcadeMode = false;
         this.difficulty = config.difficulty + 1;
+        if (config.difficulty === -1) {
+            this.arcadeMode = true;
+            this.difficulty = 12;
+        }
+        this.record = false;
+        this.maxEnemies = 3 * this.difficulty;
         this.cookies = config.cookies;
-
         this.heroNumber = this.cookies.ships.indexOf(2) + 1;
-        console.log("dif:" +this.difficulty);
-
-
         this.spawnSpeed = CONSTANTS.SCENE.INGAME.ENEMY.SPAWNSPEED + 100 * (12 - this.difficulty);
-        console.log("SS: "+this.spawnSpeed)
-        this.maxEnemies = 30;
-        this.movePercentage = CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE + this.difficulty;
+        this.movePercentage = CONSTANTS.SCENE.INGAME.ENEMY.MOVEPERCENTAGE * (1 - this.difficulty / 12);
         this.shootPercentage = CONSTANTS.SCENE.INGAME.ENEMY.FIREPERCENTAGE;
         this.moveTime = CONSTANTS.SCENE.INGAME.ENEMY.ACTIONTIME + this.difficulty / 2;
     }
@@ -34,7 +34,6 @@ class GameScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         this.load.image(CONSTANTS.SCENE.INGAME.COGWHEEL.NAME, "assets/Sprites/Others/cogwheel.png");
         // Load Hero
-        console.log("no hero preload: " + this.heroNumber)
         this.load.image(CONSTANTS.SCENE.INGAME.HERO.NAME[this.heroNumber], "assets/Sprites/Ally/heroi_" + this.heroNumber + ".png");
         // Load Enemies
         this.load.image(CONSTANTS.SCENE.INGAME.ENEMY.NAMES[0][0], "assets/Sprites/Enemy/evil_1.png");
@@ -127,7 +126,8 @@ class GameScene extends Phaser.Scene {
 
 
     update() {
-        if (this.playing) {
+        //console.log(this.maxEnemies + " " + this.playing)
+        if (this.playing && this.maxEnemies > 0) {
             // Increments
             this.timer += 16; // so every real 16ms, we increment timer += 16 (ms)
             this.moveEnemyTimer += 16;
@@ -137,6 +137,7 @@ class GameScene extends Phaser.Scene {
             if (this.timer > this.spawnSpeed) {
                 this.timer = 0;
                 new Enemy(this);
+                this.arcadeUpdate();
             }
             // To stop all enemy ships when moveTime reaches half of self
             if (this.moveEnemyTimer > this.moveTime / 2) {
@@ -167,17 +168,43 @@ class GameScene extends Phaser.Scene {
             //console.log("hero life: " + this.player.lifePoints);
             //console.log("enemies len: "+this.enemies.getChildren().length)
             //console.log("enemies bullets: " + this.enemyBullets.getChildren().length)
+        } else if (this.maxEnemies <= 0) {
+            this.playing = false;
+            this.maxEnemies = 1;
+            this.gameOverText.setText("You Won!");
         } else if (this.stopped) {
             this.renderer();
             this.player.stop();
             this.spaceTimer = 0;
-            console.log("gameover");
             this.gameOverText.setVisible(true);
+            this.scoreText.setVisible(false);
             this.healthBar.setPercentage(0);
+            this.cookies.coins += this.score;
+            if (this.maxEnemies === 1) {
+                this.healthBar.setVisible(true);
+                this.healthBar.setPercentage(1);
+            }
+            if (this.arcadeMode) {
+                if (this.cookies.highscore < this.score) {
+                    console.log("passou cookie score")
+                    this.cookies.highscore = this.score;
+                    this.record = true;
+                }
+            }
+            console.log("record_stop"+this.record)
             this.reloadBar.setPercentage(0);
             this.stopped = false;
         } else if (!this.transitionInProgress) {
             this.heart.setFrame(1); // broken heart
+            if (this.record) {
+                console.log(this.record)
+                this.scoreText.setText("New Personal best: " + this.cookies.highscore);
+                this.scoreText.setVisible(true);
+            }
+            if (this.maxEnemies === 1) {
+                this.heart.setFrame(0);
+                this.healthBar.setPercentage(1);
+            }
             this.spaceTimer += 16; // so every real 16ms, we increment timer += 16 (ms)
             if (this.spaceTimer > CONSTANTS.SCENE.INGAME.GAMEOVER.TIMER) {
                 this.spaceTimer = 0;
@@ -298,7 +325,11 @@ class GameScene extends Phaser.Scene {
     }
 
     labelsUpdater() {
-        this.scoreText.setText("Score " + this.score);
+        if (this.arcadeMode) {
+            this.scoreText.setText("Score: " + this.score + "     Highscore:" + this.cookies.highscore);
+        } else {
+            this.scoreText.setText("Ships Left: " + this.maxEnemies);
+        }
         this.bulletCounterText.setText(this.bulletCounter);
     }
 
@@ -313,6 +344,7 @@ class GameScene extends Phaser.Scene {
         this.bulletCounterText.alpha = slow;
         this.multiBullet.alpha = slow;
         this.scoreText.alpha = slow;
+        this.healthBar.alpha = slow;
         for (let i = 0; i < 3; i++) {
             this.weapon[i].alpha = slow;
         }
@@ -334,5 +366,11 @@ class GameScene extends Phaser.Scene {
         this.escape.isDown = false;
         this.player.stop();
         this.scene.launch(CONSTANTS.SCENE.QUIT.NAME, {parentScene: this});
+    }
+
+    arcadeUpdate() {
+        this.spawnSpeed = this.spawnSpeed - 1;
+        this.movePercentage = this.movePercentage + 0.005;
+        this.shootPercentage = this.shootPercentage + 0.00005;
     }
 }

@@ -103,6 +103,8 @@ class IntroScene extends Phaser.Scene {
             }
             if(parsedInput[0].toString() === " highscore"){
                 parsedData.highscore = parseFloat(parsedInput[1].toString())
+                //TODO: REMOVE THIS
+                parsedData.highscore = 0;
             }
             else if(parsedInput[0].toString() === " coins"){
                 parsedData.coins = parseInt(parsedInput[1].toString())
