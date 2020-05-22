@@ -117,6 +117,10 @@ const CONSTANTS = {
             LOGO: {
                 Y: 100,
             },
+            TEXT:{
+                NAME : "txtHighScore",
+                FONTSIZE: 20
+            },
             BUTTON: {
                 SPACING: 90,
                 HISTORY: {

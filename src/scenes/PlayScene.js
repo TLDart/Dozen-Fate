@@ -24,6 +24,7 @@ class PlayScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAME, "assets/Sprites/UI/backArrowBlue.png");
         this.load.image(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAMESELECTED, "assets/Sprites/UI/backArrowPink.png");
         this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
+        this.load.bitmapFont(CONSTANTS.SCENE.MENUPLAY.TEXT.NAME, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
     }
 
     create() {
@@ -33,6 +34,8 @@ class PlayScene extends Phaser.Scene {
         this.arcadeButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 2, CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAME).setInteractive();
         this.backButton = this.add.sprite(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING + CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.CANVAS.HEIGHT - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.PADDING - CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.BTNSIZE / 2, CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAME).setInteractive();
         this.btnSound = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
+        this.highStext = this.add.bitmapText(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING * 2 + 64, CONSTANTS.SCENE.MENUPLAY.TEXT.NAME,"HighScore :" + this.cookies.highscore, CONSTANTS.SCENE.MENUPLAY.TEXT.FONTSIZE).setOrigin(0.5,0.5).setVisible(false);
+
 
         this.changemenu = function () {
             this.changelevel(CONSTANTS.SCENE.MENU.NAME);
@@ -54,7 +57,7 @@ class PlayScene extends Phaser.Scene {
 
     }
 
-    changeButtonOn
+
 
     changehistoryon(pointer) {
         this.historyButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAMESELECTED);
@@ -68,10 +71,12 @@ class PlayScene extends Phaser.Scene {
     changearcadeon(pointer) {
         this.arcadeButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAMESELECTED);
         this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)
+        this.highStext.setVisible(true);
     }
 
     changearcadeoff(pointer) {
         this.arcadeButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAME);
+        this.highStext.setVisible(false);
     }
 
     changebackon(pointer) {
@@ -99,7 +104,6 @@ class PlayScene extends Phaser.Scene {
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
             data: {difficulty: -1, cookies: this.cookies},
-            tr
         };
         this.scene.transition(config);
     }

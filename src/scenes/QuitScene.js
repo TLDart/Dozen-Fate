@@ -91,9 +91,12 @@ class QuitScene extends Phaser.Scene {
         this.soundBtnFrame = (this.soundBtnFrame + 1) % 2;
         if (this.soundBtnFrame) {
             CONSTANTS.MUSIC.REF.setVolume(0);
+            this.data.parentScene.cookies["volume"] = 0;
         } else {
-            CONSTANTS.MUSIC.REF.setVolume(this.data.parentScene.cookies["volume"]);
+            CONSTANTS.MUSIC.REF.setVolume(0.5);
+            this.data.parentScene.cookies["volume"] = 0.5;
         }
+
         this.soundBtn.setFrame(this.soundBtnFrame);
     }
 
