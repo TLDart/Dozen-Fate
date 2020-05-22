@@ -79,19 +79,30 @@ class LevelsScene extends Phaser.Scene {
         this.next.on('pointerdown',this.handlenext,this);
     }
     handleback(){
-        if(this.pageNr === 0)
-            this.changelevel(CONSTANTS.SCENE.MENU.NAME)
+        if(this.pageNr === 0){
+            this.disableButtons()
+            this.changelevel(CONSTANTS.SCENE.MENU.NAME);
+        }
+
         else{
+            this.disableButtons()
             this.pageNr--;
             this.fadeOut.play();
             //animate
         }
+
     }
     handlenext(){
         if(this.pageNr !== CONSTANTS.SCENE.STORE.MAXPAGES){
+            this.disableButtons()
             this.pageNr++;
             this.fadeOut.play();
         }
+    }
+
+    disableButtons(){
+        this.buttons.forEach( element => element.removeAllListeners())
+        this.text.forEach( element => element.removeAllListeners())
     }
 
     changelevel(levelName) {
