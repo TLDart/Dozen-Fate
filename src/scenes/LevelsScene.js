@@ -12,7 +12,7 @@ class LevelsScene extends Phaser.Scene {
     }
 
     init(data){
-        this.cookies = data;
+        this.cookies = data.cookies;
     }
 
     preload() {

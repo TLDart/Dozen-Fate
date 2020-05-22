@@ -251,6 +251,29 @@ const CONSTANTS = {
                 MESSAGE: "volume"
             }
         },
+        CUT : {
+            NAME: "CutScene",
+            FONT: "joystix",
+            FONTSIZE: 16,
+            TEXT: "  It's the year 2331, the Emperor of" +
+                "\n   Andromeda has been assassinated" +
+                "\n during a public speech by a suicide" +
+                "\n bomber that belonged to a terrorist" +
+                "\n            organization." +
+                "\n\n\n As panic spreads and riots break out " +
+                "\n    all around the galaxy, Sirius," +
+                "\n the most powerful galactic alliance " +
+                "\n  to date, are taking this chance to" +
+                "\n  invade and conquer Andromeda once" +
+                "\n             and for all." +
+                "\n\n\n However, it won't be as easy as they " +
+                "\n  think, as desperate times call for " +
+                "\n   heroes, 12 of Andromeda's most " +
+                "\n capable pilots are ready to protect " +
+                "\n            what's theirs... " +
+                "\n\n\n       They go by the name of..." +
+                "\n\n\n           The Dozen Fate",
+        },
         INGAME: {
             NAME: "GameScene",
             GAMEOVER: {

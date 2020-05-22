@@ -7,9 +7,9 @@ function main() {
         type: Phaser.CANVAS,
         width: CONSTANTS.CANVAS.WIDTH,
         height: CONSTANTS.CANVAS.HEIGHT,
-        scene: [IntroScene, MenuScene, PlayScene, HelpScene, LevelsScene, StoreScene, SettingsScene, GameScene, QuitScene],
-        //scene: [GameScene],
-        physics : {
+        scene: [IntroScene, MenuScene, PlayScene, HelpScene, LevelsScene, StoreScene, SettingsScene, CutScene, GameScene, QuitScene],
+        //scene: [CutScene],
+        physics: {
             default: "arcade",
             arcade: {
                 debug: false,

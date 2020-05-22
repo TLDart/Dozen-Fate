@@ -1,4 +1,4 @@
-class PlayScene extends Phaser.Scene{
+class PlayScene extends Phaser.Scene {
     logo;
     background;
     historyButton;
@@ -6,14 +6,15 @@ class PlayScene extends Phaser.Scene{
     backButton;
     btnSound;
 
-    init(data){
+    init(data) {
         this.cookies = data;
     }
 
     constructor() {
         super(CONSTANTS.SCENE.MENUPLAY.NAME); // DO NOT FORGET TO ADD SCENE TO MAIN
     }
-    preload(){
+
+    preload() {
         this.load.image(CONSTANTS.SCENE.LOGO.NAME, "assets/Logo/Logo.png");
         this.load.image(CONSTANTS.SCENE.BACKGROUND.NAME, "assets/Sprites/Others/background.png");
         this.load.image(CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAME, "assets/Sprites/UI/MenuHistoryBlue.png");
@@ -24,7 +25,8 @@ class PlayScene extends Phaser.Scene{
         this.load.image(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAMESELECTED, "assets/Sprites/UI/backArrowPink.png");
         this.load.audio(CONSTANTS.SCENE.BTNSOUND.NAME, "assets/Sounds/Buttons/sfx_sounds_button3.wav");
     }
-    create(){
+
+    create() {
         this.background = this.add.tileSprite(0, 0, CONSTANTS.CANVAS.WIDTH, CONSTANTS.CANVAS.HEIGHT, CONSTANTS.SCENE.BACKGROUND.NAME).setOrigin(0, 0);
         this.logo = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y, CONSTANTS.SCENE.LOGO.NAME).setScale(CONSTANTS.SCENE.LOGO.SCALE);
         this.historyButton = this.add.sprite(CONSTANTS.CANVAS.WIDTH / 2, CONSTANTS.SCENE.MENU.LOGO.Y + CONSTANTS.SCENE.MENU.BUTTON.SPACING, CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAME).setInteractive();
@@ -36,50 +38,74 @@ class PlayScene extends Phaser.Scene{
             this.changelevel(CONSTANTS.SCENE.MENU.NAME);
         }
         this.changelevels = function () {
-            this.changelevel(CONSTANTS.SCENE.LEVELS.NAME);
+            this.changelevel(CONSTANTS.SCENE.CUT.NAME);
         }
 
-        this.historyButton.on('pointerover', this.changehistoryon,this);
-        this.historyButton.on('pointerout', this.changehistoryoff,this);
+        this.historyButton.on('pointerover', this.changehistoryon, this);
+        this.historyButton.on('pointerout', this.changehistoryoff, this);
         this.historyButton.on('pointerdown', this.changelevels, this);
-        this.arcadeButton.on('pointerover', this.changearcadeon,this);
-        this.arcadeButton.on('pointerout', this.changearcadeoff,this);
-        this.arcadeButton.on('pointerdown', this.changeinfinitegame,this);
-        this.backButton.on('pointerout', this.changebackoff,this);
-        this.backButton.on('pointerover', this.changebackon,this);
-        this.backButton.on('pointerdown', this.changemenu,this);
+        this.arcadeButton.on('pointerover', this.changearcadeon, this);
+        this.arcadeButton.on('pointerout', this.changearcadeoff, this);
+        this.arcadeButton.on('pointerdown', this.changeinfinitegame, this);
+        this.backButton.on('pointerout', this.changebackoff, this);
+        this.backButton.on('pointerover', this.changebackon, this);
+        this.backButton.on('pointerdown', this.changemenu, this);
 
 
     }
+
     changeButtonOn
-    changehistoryon(pointer){this.historyButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAMESELECTED);this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);}
-    changehistoryoff(pointer){this.historyButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAME);}
-    changearcadeon(pointer){this.arcadeButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAMESELECTED); this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
-    changearcadeoff(pointer){this.arcadeButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAME);}
-    changebackon(pointer){this.backButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAMESELECTED); this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)}
-    changebackoff(pointer){this.backButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAME);}
+
+    changehistoryon(pointer) {
+        this.historyButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAMESELECTED);
+        this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG);
+    }
+
+    changehistoryoff(pointer) {
+        this.historyButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.HISTORY.NAME);
+    }
+
+    changearcadeon(pointer) {
+        this.arcadeButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAMESELECTED);
+        this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)
+    }
+
+    changearcadeoff(pointer) {
+        this.arcadeButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.ARCADE.NAME);
+    }
+
+    changebackon(pointer) {
+        this.backButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAMESELECTED);
+        this.btnSound.play(CONSTANTS.SCENE.BTNSOUND.CONFIG)
+    }
+
+    changebackoff(pointer) {
+        this.backButton.setTexture(CONSTANTS.SCENE.MENUPLAY.BUTTON.BACK.NAME);
+    }
 
     changelevel(levelName) {
         var config = {
             target: levelName,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
-            data: this.cookies
+            data: {cookies: this.cookies}
         };
         this.scene.transition(config);
     }
+
     changeinfinitegame() {
         var config = {
             target: CONSTANTS.SCENE.INGAME.NAME,
             duration: CONSTANTS.SCENE.SPEED.MENUTRANSITION,
             moveBelow: true,
-            data: {difficulty : -1, cookies :this.cookies}
+            data: {difficulty: -1, cookies: this.cookies},
+            tr
         };
         this.scene.transition(config);
     }
 
 
-    update(){
+    update() {
         this.background.tilePositionY += CONSTANTS.SCENE.SPEED.TILE;
     }
 
