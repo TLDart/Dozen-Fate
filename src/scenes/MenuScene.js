@@ -22,6 +22,7 @@ class MenuScene extends Phaser.Scene {
         this.reseted = false;
         this.timer = 0;
         console.log(this.cookies)
+        this.flushCookie(this.cookies)
     }
 
     preload() {
@@ -159,6 +160,16 @@ class MenuScene extends Phaser.Scene {
         this.helpButton.setVisible(true);
         this.storeButton.setVisible(true);
         this.settingsButton.setVisible(true);
+    }
+
+    flushCookie(dataS,days=30) {
+        let d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000)); // Cookies expiring days
+        let expireDay = "expires="+d.toUTCString();
+        Object.keys(dataS).forEach(element => {
+            //console.log(element + "=" + dataS[element].toString()+ ";" + expireDay);
+            document.cookie = element + "=" + dataS[element].toString() + ";" + expireDay;
+        });
     }
 
 }

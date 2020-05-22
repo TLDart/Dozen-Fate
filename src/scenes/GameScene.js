@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene {
     }
 
     init(config) {
+        this.cookies = config;
         this.timer = 0;
         this.moveEnemyTimer = 0;
         this.bulletRegenerationTimer = 0;
@@ -172,6 +173,7 @@ class GameScene extends Phaser.Scene {
             this.playing = false;
             this.maxEnemies = 1;
             this.gameOverText.setText("You Won!");
+            this.cookies.level++;
         } else if (this.stopped) {
             this.renderer();
             this.player.stop();

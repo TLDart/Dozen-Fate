@@ -40,7 +40,7 @@ class IntroScene extends Phaser.Scene {
         this.btnAudio = this.sound.add(CONSTANTS.SCENE.INTRO.TEXT.SOUND);
         this.music = this.sound.add(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.NAME);
         this.music.play(CONSTANTS.SCENE.INTRO.BACKGROUND_MUSIC.CONFIG);
-        this.flushCookie(mockData)
+        //this.flushCookie(mockData)
         this.cookies = this.loadCookies();
         //console.log(this.cookies);
         //this.sound.pauseOnBlur = false;
@@ -85,10 +85,10 @@ class IntroScene extends Phaser.Scene {
 
     loadCookies() {
         let parsedData = {
-            volume : 0.6,
+            volume : 0.5,
             ships : [2].concat(new Array(CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER - 1).fill(0)),
-            coins: 0,
-            level: 0,
+            coins: 500,
+            level: 1,
             highscore: 0
         };
         var decodedCookie = decodeURIComponent(document.cookie);
@@ -119,15 +119,5 @@ class IntroScene extends Phaser.Scene {
         console.log( "in intro", parsedData)
         return parsedData;
     }
-
-    flushCookie(dataS,days=30) {
-        let d = new Date();
-        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000)); // Cookies expiring days
-        let expireDay = "expires="+d.toUTCString();
-        Object.keys(dataS).forEach(element => {
-            //console.log(element + "=" + dataS[element].toString()+ ";" + expireDay);
-            document.cookie = element + "=" + dataS[element].toString() + ";" + expireDay;
-            });
-        }
 
 }
