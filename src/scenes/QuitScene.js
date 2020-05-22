@@ -39,7 +39,8 @@ class QuitScene extends Phaser.Scene {
         }*/
         this.yesBtnFrame = 0;
         this.noBtnFrame = 0;
-        this.soundBtnFrame = 0;
+        this.soundBtnFrame = CONSTANTS.MUSIC.REF.volume === 0 ? 1 : 0;
+        this.soundBtn.setFrame(this.soundBtnFrame);
         this.soundPlayer = this.sound.add(CONSTANTS.SCENE.BTNSOUND.NAME);
 
         this.changeYesTexture = function () {
@@ -89,9 +90,9 @@ class QuitScene extends Phaser.Scene {
     soundHandler() {//TODO: end sound handler
         this.soundBtnFrame = (this.soundBtnFrame + 1) % 2;
         if (this.soundBtnFrame) {
-
+            CONSTANTS.MUSIC.REF.setVolume(0);
         } else {
-
+            CONSTANTS.MUSIC.REF.setVolume(this.data.parentScene.cookies["volume"]);
         }
         this.soundBtn.setFrame(this.soundBtnFrame);
     }
