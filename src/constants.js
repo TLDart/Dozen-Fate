@@ -366,6 +366,15 @@ const CONSTANTS = {
                 NAME: "cogWheel",
                 SCALE: 0.6,
             },
+            SOUNDS :{
+                AK : "ak47Sound",
+                BZ : "bazookaSound",
+                PISTOL : "pistolSound",
+                WIN : "winSound",
+                AMMOOUT : "outOfAmmoSound",
+                SHIPDYING : "explosionSound",
+                DAMAGE : "damageSound",
+            },
         },
         QUIT: {
             NAME: "QuitScene",

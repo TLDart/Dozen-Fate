@@ -17,6 +17,7 @@ class Bullet extends Animator {
             starShip.lifePoints -= this.damage;
         }
         this.destroy();
+        return starShip.lifePoints;
     }
 
     update() {
