@@ -36,6 +36,7 @@ class Hero extends StarShip {
         bullet.angle = this.bulletAngle;
         bullet.body.velocity.x = this.bulletSpeedX;
         bullet.body.velocity.y = this.bulletSpeedY;
+        this.scene.weaponSoundBtn[this.weaponID - 1].play();
     }
 
     resetPosition(){

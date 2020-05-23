@@ -66,6 +66,14 @@ class GameScene extends Phaser.Scene {
         });
         this.load.bitmapFont(CONSTANTS.SCENE.INGAME.GAMEOVER.FONT, "assets/Fonts/joystix/joystix_white.png", "assets/Fonts/joystix/joystix_white.fnt");
         this.load.bitmapFont(CONSTANTS.SCENE.INGAME.BULLET.FONT, "assets/Fonts/joystix/joystix_black.png", "assets/Fonts/joystix/joystix_black.fnt");
+        // Load Sounds
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.AK,"assets/Sounds/sounds/ak47.wav");
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.PISTOL,"assets/Sounds/sounds/pistol.wav");
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.BZ,"assets/Sounds/sounds/bazooka.wav");
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.AMMOOUT,"assets/Sounds/sounds/no_ammo.wav");
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.WIN,"assets/Sounds/sounds/gameWin.wav");
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.DAMAGE,"assets/Sounds/sounds/damageSound.wav");
+        this.load.audio(CONSTANTS.SCENE.INGAME.SOUNDS.SHIPDYING,"assets/Sounds/sounds/shipExplosion.wav");
     }
 
     create() {
@@ -118,7 +126,15 @@ class GameScene extends Phaser.Scene {
         this.healthBar = new Bar(this, this.heart.x, this.heart.y);
         this.reloadBar = new Bar(this, this.multiBullet.getTopLeft().x, this.multiBullet.getTopLeft().y + 0.7 * this.multiBullet.height, this.multiBullet.width, 5, 1);
         this.reloadBar.setOrigin(0.47, 0.5);
-        console.log(this.multiBullet)
+        // Sound Btns
+        this.weaponSoundBtn = [];
+        this.weaponSoundBtn[0] = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.AK);
+        this.weaponSoundBtn[1] = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.PISTOL);
+        this.weaponSoundBtn[2] = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.BZ);
+        this.outSoundBtn = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.AMMOOUT);
+        this.winSoundBtn = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.WIN);
+        this.damageSoundBtn = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.DAMAGE);
+        this.explosionSoundBtn = this.sound.add(CONSTANTS.SCENE.INGAME.SOUNDS.SHIPDYING);
         // Update Function Control Vars
         this.playing = true;
         this.stopped = true;
@@ -173,6 +189,7 @@ class GameScene extends Phaser.Scene {
             this.playing = false;
             this.maxEnemies = 1;
             this.gameOverText.setText("You Won!");
+            this.winSoundBtn.play();
             this.cookies.level++;
         } else if (this.stopped) {
             this.renderer();
@@ -253,9 +270,8 @@ class GameScene extends Phaser.Scene {
             if (this.bulletCounter > 0) {
                 this.player.fire();
                 --this.bulletCounter;
-                //TODO: Add sound
             } else {
-                //TODO: out of ammo sound
+                this.outSoundBtn.play();
             }
         }
     }
@@ -302,7 +318,13 @@ class GameScene extends Phaser.Scene {
 
     bulletHitHandler(ship, bullet) {
         //TODO: if (pixel perfect) do
-        bullet.doDamage(ship);
+        var hpLeft = bullet.doDamage(ship);
+        //this.damageSoundBtn.play();
+        if (hpLeft > 0){
+            this.damageSoundBtn.play();
+        } else {
+            this.explosionSoundBtn.play();
+        }
     }
 
     playerEnemyCollideHandler(player, enemy) {
@@ -310,11 +332,13 @@ class GameScene extends Phaser.Scene {
         player.lifePoints -= CONSTANTS.SCENE.INGAME.ENEMY.DAMAGEHEROCOLLISION;
         this.heart.play(CONSTANTS.SCENE.INGAME.HEALTHBAR.ANIMATION);
         enemy.destroy();
+        this.damageSoundBtn.play();
     }
 
     bulletsCollisionHandler(bulletA, bulletB) {
         bulletA.destroy();
         bulletB.destroy();
+        this.damageSoundBtn.play();
     }
 
 

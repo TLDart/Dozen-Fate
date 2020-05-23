@@ -59,6 +59,7 @@ class Enemy extends StarShip {
         } else if (this.y > CONSTANTS.CANVAS.HEIGHT) {
             this.scene.player.lifePoints -= CONSTANTS.SCENE.INGAME.ENEMY.DAMAGEBOTTOM;
             this.scene.heart.play(CONSTANTS.SCENE.INGAME.HEALTHBAR.ANIMATION);
+            this.scene.damageSoundBtn.play();
             this.destroy();
         } else {
             var leftBoundX = Math.round(this.width / 2);

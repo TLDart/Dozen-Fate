@@ -38,7 +38,7 @@ class CutScene extends Phaser.Scene {
 
     update() {
         if (!this.stopFlag){
-            var decrement = 1;
+            var decrement = 0.5;
             this.timer += 16;
             if (this.leaveText.y > CONSTANTS.CANVAS.HEIGHT/2){
                 this.leaveText.y -= decrement;
