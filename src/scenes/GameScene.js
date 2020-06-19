@@ -60,7 +60,7 @@ class GameScene extends Phaser.Scene {
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[1], "assets/Sprites/Weapon/arma2_s.png");
         this.load.image(CONSTANTS.SCENE.INGAME.WEAPON.NAMES.SELECTED[2], "assets/Sprites/Weapon/arma3_s.png");
         // Load Health Bar frame
-        this.load.spritesheet(CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME, "assets/sprites/Others/bar_frame.png", {
+        this.load.spritesheet(CONSTANTS.SCENE.INGAME.HEALTHBAR.NAME, "assets/Sprites/Others/Bar_frame.png", {
             frameHeight: CONSTANTS.SCENE.INGAME.HEALTHBAR.HEIGHT,
             frameWidth: CONSTANTS.SCENE.INGAME.HEALTHBAR.WIDTH
         });

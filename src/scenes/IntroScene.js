@@ -87,7 +87,7 @@ class IntroScene extends Phaser.Scene {
         let parsedData = {
             volume : 0.5,
             ships : [2].concat(new Array(CONSTANTS.SCENE.STORE.SPRITES.SPRITENUMBER - 1).fill(0)),
-            coins: 500,
+            coins: 1000,
             level: 1,
             highscore: 0
         };
@@ -98,13 +98,9 @@ class IntroScene extends Phaser.Scene {
            //console.log(parsedInput[0],parsedInput[1].toString());
             if(parsedInput[0].toString() === " volume"){
                 parsedData.volume = parseFloat(parsedInput[1].toString());
-                //TODO: REMOVE THIS FOR MUSIC
-                parsedData.volume = 0;
             }
             if(parsedInput[0].toString() === " highscore"){
                 parsedData.highscore = parseFloat(parsedInput[1].toString())
-                //TODO: REMOVE THIS
-                parsedData.highscore = 0;
             }
             else if(parsedInput[0].toString() === " coins"){
                 parsedData.coins = parseInt(parsedInput[1].toString())
